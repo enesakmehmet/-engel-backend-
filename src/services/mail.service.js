@@ -1,9 +1,14 @@
 const { Resend } = require('resend');
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resendApiKey = process.env.RESEND_API_KEY;
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 const sendPasswordResetEmail = async (email, token) => {
   try {
+    if (!resend) {
+      throw new Error('RESEND_API_KEY is not configured');
+    }
+
     const data = await resend.emails.send({
       from: process.env.MAIL_FROM || 'onboarding@resend.dev',
       to: email,
@@ -32,6 +37,11 @@ const sendPasswordResetEmail = async (email, token) => {
 
 const sendWelcomeEmail = async (email, username) => {
   try {
+    if (!resend) {
+      console.warn('RESEND_API_KEY is missing; skipping welcome email send.');
+      return null;
+    }
+
     const data = await resend.emails.send({
       from: process.env.MAIL_FROM || 'onboarding@resend.dev',
       to: email,
