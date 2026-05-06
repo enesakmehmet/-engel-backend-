@@ -1,0 +1,1491 @@
+[
+  {
+    "row": 0,
+    "col": 0,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "Olay / Resimdeki ünlü pop şarkıcımız",
+    "ans": "HADİSE"
+  },
+  {
+    "row": 0,
+    "col": 1,
+    "type": "LETTER",
+    "answer": "H"
+  },
+  {
+    "row": 0,
+    "col": 2,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 0,
+    "col": 3,
+    "type": "LETTER",
+    "answer": "D"
+  },
+  {
+    "row": 0,
+    "col": 4,
+    "type": "LETTER",
+    "answer": "İ"
+  },
+  {
+    "row": 0,
+    "col": 5,
+    "type": "LETTER",
+    "answer": "S"
+  },
+  {
+    "row": 0,
+    "col": 6,
+    "type": "LETTER",
+    "answer": "E"
+  },
+  {
+    "row": 0,
+    "col": 7,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "Balı alınmış petek",
+    "ans": "KAVARA"
+  },
+  {
+    "row": 0,
+    "col": 8,
+    "type": "LETTER",
+    "answer": "K"
+  },
+  {
+    "row": 0,
+    "col": 9,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 0,
+    "col": 10,
+    "type": "LETTER",
+    "answer": "V"
+  },
+  {
+    "row": 0,
+    "col": 11,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 0,
+    "col": 12,
+    "type": "LETTER",
+    "answer": "R"
+  },
+  {
+    "row": 0,
+    "col": 13,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 0,
+    "col": 14,
+    "type": "CLUE",
+    "arrowDir": "DOWN",
+    "clueText": "Eğreti yapı",
+    "ans": "BARAKA"
+  },
+  {
+    "row": 0,
+    "col": 15,
+    "type": "CLUE",
+    "arrowDir": "DOWN",
+    "clueText": "Tahtadan nefesli bir çalgı",
+    "ans": "OBUA"
+  },
+  {
+    "row": 1,
+    "col": 0,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "Gemiyi düz yürütme",
+    "ans": "VİYA"
+  },
+  {
+    "row": 1,
+    "col": 1,
+    "type": "LETTER",
+    "answer": "V"
+  },
+  {
+    "row": 1,
+    "col": 2,
+    "type": "LETTER",
+    "answer": "İ"
+  },
+  {
+    "row": 1,
+    "col": 3,
+    "type": "LETTER",
+    "answer": "Y"
+  },
+  {
+    "row": 1,
+    "col": 4,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 1,
+    "col": 5,
+    "type": "CLUE",
+    "arrowDir": "DOWN",
+    "clueText": "Derviş omuz örtüsü",
+    "ans": "RİDA"
+  },
+  {
+    "row": 1,
+    "col": 6,
+    "type": "CLUE",
+    "arrowDir": "DOWN",
+    "clueText": "Kayıp",
+    "ans": "ZAYİ"
+  },
+  {
+    "row": 1,
+    "col": 7,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "Yüzyıl",
+    "ans": "ASIR"
+  },
+  {
+    "row": 1,
+    "col": 8,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 1,
+    "col": 9,
+    "type": "LETTER",
+    "answer": "S"
+  },
+  {
+    "row": 1,
+    "col": 10,
+    "type": "LETTER",
+    "answer": "I"
+  },
+  {
+    "row": 1,
+    "col": 11,
+    "type": "LETTER",
+    "answer": "R"
+  },
+  {
+    "row": 1,
+    "col": 12,
+    "type": "BLOCK"
+  },
+  {
+    "row": 1,
+    "col": 13,
+    "type": "BLOCK"
+  },
+  {
+    "row": 1,
+    "col": 14,
+    "type": "LETTER",
+    "answer": "B"
+  },
+  {
+    "row": 1,
+    "col": 15,
+    "type": "LETTER",
+    "answer": "O"
+  },
+  {
+    "row": 2,
+    "col": 0,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "Bir malı izinsiz zorla alma",
+    "ans": "GASP"
+  },
+  {
+    "row": 2,
+    "col": 1,
+    "type": "LETTER",
+    "answer": "G"
+  },
+  {
+    "row": 2,
+    "col": 2,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 2,
+    "col": 3,
+    "type": "LETTER",
+    "answer": "S"
+  },
+  {
+    "row": 2,
+    "col": 4,
+    "type": "LETTER",
+    "answer": "P"
+  },
+  {
+    "row": 2,
+    "col": 5,
+    "type": "LETTER",
+    "answer": "R"
+  },
+  {
+    "row": 2,
+    "col": 6,
+    "type": "LETTER",
+    "answer": "Z"
+  },
+  {
+    "row": 2,
+    "col": 7,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "Bir yıllık kuzu",
+    "ans": "TOKLU"
+  },
+  {
+    "row": 2,
+    "col": 8,
+    "type": "LETTER",
+    "answer": "T"
+  },
+  {
+    "row": 2,
+    "col": 9,
+    "type": "LETTER",
+    "answer": "O"
+  },
+  {
+    "row": 2,
+    "col": 10,
+    "type": "LETTER",
+    "answer": "K"
+  },
+  {
+    "row": 2,
+    "col": 11,
+    "type": "LETTER",
+    "answer": "L"
+  },
+  {
+    "row": 2,
+    "col": 12,
+    "type": "LETTER",
+    "answer": "U"
+  },
+  {
+    "row": 2,
+    "col": 13,
+    "type": "BLOCK"
+  },
+  {
+    "row": 2,
+    "col": 14,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 2,
+    "col": 15,
+    "type": "LETTER",
+    "answer": "B"
+  },
+  {
+    "row": 3,
+    "col": 0,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "Hile, düzen",
+    "ans": "DEK"
+  },
+  {
+    "row": 3,
+    "col": 1,
+    "type": "LETTER",
+    "answer": "D"
+  },
+  {
+    "row": 3,
+    "col": 2,
+    "type": "LETTER",
+    "answer": "E"
+  },
+  {
+    "row": 3,
+    "col": 3,
+    "type": "LETTER",
+    "answer": "K"
+  },
+  {
+    "row": 3,
+    "col": 4,
+    "type": "BLOCK"
+  },
+  {
+    "row": 3,
+    "col": 5,
+    "type": "LETTER",
+    "answer": "İ"
+  },
+  {
+    "row": 3,
+    "col": 6,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 3,
+    "col": 7,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "Oyma baskı",
+    "ans": "GRAVÜR"
+  },
+  {
+    "row": 3,
+    "col": 8,
+    "type": "LETTER",
+    "answer": "G"
+  },
+  {
+    "row": 3,
+    "col": 9,
+    "type": "LETTER",
+    "answer": "R"
+  },
+  {
+    "row": 3,
+    "col": 10,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 3,
+    "col": 11,
+    "type": "LETTER",
+    "answer": "V"
+  },
+  {
+    "row": 3,
+    "col": 12,
+    "type": "LETTER",
+    "answer": "Ü"
+  },
+  {
+    "row": 3,
+    "col": 13,
+    "type": "LETTER",
+    "answer": "R"
+  },
+  {
+    "row": 3,
+    "col": 14,
+    "type": "LETTER",
+    "answer": "R"
+  },
+  {
+    "row": 3,
+    "col": 15,
+    "type": "LETTER",
+    "answer": "U"
+  },
+  {
+    "row": 4,
+    "col": 0,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "Uğursuz",
+    "ans": "ŞOM"
+  },
+  {
+    "row": 4,
+    "col": 1,
+    "type": "LETTER",
+    "answer": "Ş"
+  },
+  {
+    "row": 4,
+    "col": 2,
+    "type": "LETTER",
+    "answer": "O"
+  },
+  {
+    "row": 4,
+    "col": 3,
+    "type": "LETTER",
+    "answer": "M"
+  },
+  {
+    "row": 4,
+    "col": 4,
+    "type": "BLOCK"
+  },
+  {
+    "row": 4,
+    "col": 5,
+    "type": "LETTER",
+    "answer": "D"
+  },
+  {
+    "row": 4,
+    "col": 6,
+    "type": "LETTER",
+    "answer": "Y"
+  },
+  {
+    "row": 4,
+    "col": 7,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "Güreşte bir oyun",
+    "ans": "KÜNDE"
+  },
+  {
+    "row": 4,
+    "col": 8,
+    "type": "LETTER",
+    "answer": "K"
+  },
+  {
+    "row": 4,
+    "col": 9,
+    "type": "LETTER",
+    "answer": "Ü"
+  },
+  {
+    "row": 4,
+    "col": 10,
+    "type": "LETTER",
+    "answer": "N"
+  },
+  {
+    "row": 4,
+    "col": 11,
+    "type": "LETTER",
+    "answer": "D"
+  },
+  {
+    "row": 4,
+    "col": 12,
+    "type": "LETTER",
+    "answer": "E"
+  },
+  {
+    "row": 4,
+    "col": 13,
+    "type": "BLOCK"
+  },
+  {
+    "row": 4,
+    "col": 14,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 4,
+    "col": 15,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 5,
+    "col": 0,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "Kırmızı, mavi karışımı renk",
+    "ans": "MOR"
+  },
+  {
+    "row": 5,
+    "col": 1,
+    "type": "LETTER",
+    "answer": "M"
+  },
+  {
+    "row": 5,
+    "col": 2,
+    "type": "LETTER",
+    "answer": "O"
+  },
+  {
+    "row": 5,
+    "col": 3,
+    "type": "LETTER",
+    "answer": "R"
+  },
+  {
+    "row": 5,
+    "col": 4,
+    "type": "BLOCK"
+  },
+  {
+    "row": 5,
+    "col": 5,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 5,
+    "col": 6,
+    "type": "LETTER",
+    "answer": "İ"
+  },
+  {
+    "row": 5,
+    "col": 7,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "İyi, güzel, mükemmel",
+    "ans": "EŞSİZ"
+  },
+  {
+    "row": 5,
+    "col": 8,
+    "type": "LETTER",
+    "answer": "E"
+  },
+  {
+    "row": 5,
+    "col": 9,
+    "type": "LETTER",
+    "answer": "Ş"
+  },
+  {
+    "row": 5,
+    "col": 10,
+    "type": "LETTER",
+    "answer": "S"
+  },
+  {
+    "row": 5,
+    "col": 11,
+    "type": "LETTER",
+    "answer": "İ"
+  },
+  {
+    "row": 5,
+    "col": 12,
+    "type": "LETTER",
+    "answer": "Z"
+  },
+  {
+    "row": 5,
+    "col": 13,
+    "type": "BLOCK"
+  },
+  {
+    "row": 5,
+    "col": 14,
+    "type": "LETTER",
+    "answer": "K"
+  },
+  {
+    "row": 5,
+    "col": 15,
+    "type": "BLOCK"
+  },
+  {
+    "row": 6,
+    "col": 0,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "Gemi yapılan yer",
+    "ans": "TERSANE"
+  },
+  {
+    "row": 6,
+    "col": 1,
+    "type": "LETTER",
+    "answer": "T"
+  },
+  {
+    "row": 6,
+    "col": 2,
+    "type": "LETTER",
+    "answer": "E"
+  },
+  {
+    "row": 6,
+    "col": 3,
+    "type": "LETTER",
+    "answer": "R"
+  },
+  {
+    "row": 6,
+    "col": 4,
+    "type": "LETTER",
+    "answer": "S"
+  },
+  {
+    "row": 6,
+    "col": 5,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 6,
+    "col": 6,
+    "type": "LETTER",
+    "answer": "N"
+  },
+  {
+    "row": 6,
+    "col": 7,
+    "type": "LETTER",
+    "answer": "E"
+  },
+  {
+    "row": 6,
+    "col": 8,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "Olanak",
+    "ans": "İMKAN"
+  },
+  {
+    "row": 6,
+    "col": 9,
+    "type": "LETTER",
+    "answer": "İ"
+  },
+  {
+    "row": 6,
+    "col": 10,
+    "type": "LETTER",
+    "answer": "M"
+  },
+  {
+    "row": 6,
+    "col": 11,
+    "type": "LETTER",
+    "answer": "K"
+  },
+  {
+    "row": 6,
+    "col": 12,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 6,
+    "col": 13,
+    "type": "LETTER",
+    "answer": "N"
+  },
+  {
+    "row": 6,
+    "col": 14,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 6,
+    "col": 15,
+    "type": "BLOCK"
+  },
+  {
+    "row": 7,
+    "col": 0,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "Akarsu krosu",
+    "ans": "RAFTİNG"
+  },
+  {
+    "row": 7,
+    "col": 1,
+    "type": "LETTER",
+    "answer": "R"
+  },
+  {
+    "row": 7,
+    "col": 2,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 7,
+    "col": 3,
+    "type": "LETTER",
+    "answer": "F"
+  },
+  {
+    "row": 7,
+    "col": 4,
+    "type": "LETTER",
+    "answer": "T"
+  },
+  {
+    "row": 7,
+    "col": 5,
+    "type": "LETTER",
+    "answer": "İ"
+  },
+  {
+    "row": 7,
+    "col": 6,
+    "type": "LETTER",
+    "answer": "N"
+  },
+  {
+    "row": 7,
+    "col": 7,
+    "type": "LETTER",
+    "answer": "G"
+  },
+  {
+    "row": 7,
+    "col": 8,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "Antlaşma",
+    "ans": "AHD"
+  },
+  {
+    "row": 7,
+    "col": 9,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 7,
+    "col": 10,
+    "type": "LETTER",
+    "answer": "H"
+  },
+  {
+    "row": 7,
+    "col": 11,
+    "type": "LETTER",
+    "answer": "D"
+  },
+  {
+    "row": 7,
+    "col": 12,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "Her zaman",
+    "ans": "HEP"
+  },
+  {
+    "row": 7,
+    "col": 13,
+    "type": "LETTER",
+    "answer": "H"
+  },
+  {
+    "row": 7,
+    "col": 14,
+    "type": "LETTER",
+    "answer": "E"
+  },
+  {
+    "row": 7,
+    "col": 15,
+    "type": "LETTER",
+    "answer": "P"
+  },
+  {
+    "row": 8,
+    "col": 0,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "Kırışık giderme aracı",
+    "ans": "ÜTÜ"
+  },
+  {
+    "row": 8,
+    "col": 1,
+    "type": "LETTER",
+    "answer": "Ü"
+  },
+  {
+    "row": 8,
+    "col": 2,
+    "type": "LETTER",
+    "answer": "T"
+  },
+  {
+    "row": 8,
+    "col": 3,
+    "type": "LETTER",
+    "answer": "Ü"
+  },
+  {
+    "row": 8,
+    "col": 4,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "İdeal",
+    "ans": "ÜLKÜ"
+  },
+  {
+    "row": 8,
+    "col": 5,
+    "type": "LETTER",
+    "answer": "Ü"
+  },
+  {
+    "row": 8,
+    "col": 6,
+    "type": "LETTER",
+    "answer": "L"
+  },
+  {
+    "row": 8,
+    "col": 7,
+    "type": "LETTER",
+    "answer": "K"
+  },
+  {
+    "row": 8,
+    "col": 8,
+    "type": "LETTER",
+    "answer": "Ü"
+  },
+  {
+    "row": 8,
+    "col": 9,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "Büyük tren istasyonu",
+    "ans": "GAR"
+  },
+  {
+    "row": 8,
+    "col": 10,
+    "type": "LETTER",
+    "answer": "G"
+  },
+  {
+    "row": 8,
+    "col": 11,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 8,
+    "col": 12,
+    "type": "LETTER",
+    "answer": "R"
+  },
+  {
+    "row": 8,
+    "col": 13,
+    "type": "BLOCK"
+  },
+  {
+    "row": 8,
+    "col": 14,
+    "type": "BLOCK"
+  },
+  {
+    "row": 8,
+    "col": 15,
+    "type": "BLOCK"
+  },
+  {
+    "row": 9,
+    "col": 0,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "Su yosunu",
+    "ans": "ALG"
+  },
+  {
+    "row": 9,
+    "col": 1,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 9,
+    "col": 2,
+    "type": "LETTER",
+    "answer": "L"
+  },
+  {
+    "row": 9,
+    "col": 3,
+    "type": "LETTER",
+    "answer": "G"
+  },
+  {
+    "row": 9,
+    "col": 4,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "Dolu, çok",
+    "ans": "GÜR"
+  },
+  {
+    "row": 9,
+    "col": 5,
+    "type": "LETTER",
+    "answer": "G"
+  },
+  {
+    "row": 9,
+    "col": 6,
+    "type": "LETTER",
+    "answer": "Ü"
+  },
+  {
+    "row": 9,
+    "col": 7,
+    "type": "LETTER",
+    "answer": "R"
+  },
+  {
+    "row": 9,
+    "col": 8,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "Üye",
+    "ans": "AZA"
+  },
+  {
+    "row": 9,
+    "col": 9,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 9,
+    "col": 10,
+    "type": "LETTER",
+    "answer": "Z"
+  },
+  {
+    "row": 9,
+    "col": 11,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 9,
+    "col": 12,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "Mesafe",
+    "ans": "ARA"
+  },
+  {
+    "row": 9,
+    "col": 13,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 9,
+    "col": 14,
+    "type": "LETTER",
+    "answer": "R"
+  },
+  {
+    "row": 9,
+    "col": 15,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 10,
+    "col": 0,
+    "type": "CLUE",
+    "arrowDir": "RIGHT",
+    "clueText": "Ad, unvan",
+    "ans": "NAM"
+  },
+  {
+    "row": 10,
+    "col": 1,
+    "type": "LETTER",
+    "answer": "N"
+  },
+  {
+    "row": 10,
+    "col": 2,
+    "type": "LETTER",
+    "answer": "A"
+  },
+  {
+    "row": 10,
+    "col": 3,
+    "type": "LETTER",
+    "answer": "M"
+  },
+  {
+    "row": 10,
+    "col": 4,
+    "type": "BLOCK"
+  },
+  {
+    "row": 10,
+    "col": 5,
+    "type": "BLOCK"
+  },
+  {
+    "row": 10,
+    "col": 6,
+    "type": "BLOCK"
+  },
+  {
+    "row": 10,
+    "col": 7,
+    "type": "BLOCK"
+  },
+  {
+    "row": 10,
+    "col": 8,
+    "type": "BLOCK"
+  },
+  {
+    "row": 10,
+    "col": 9,
+    "type": "BLOCK"
+  },
+  {
+    "row": 10,
+    "col": 10,
+    "type": "BLOCK"
+  },
+  {
+    "row": 10,
+    "col": 11,
+    "type": "BLOCK"
+  },
+  {
+    "row": 10,
+    "col": 12,
+    "type": "BLOCK"
+  },
+  {
+    "row": 10,
+    "col": 13,
+    "type": "BLOCK"
+  },
+  {
+    "row": 10,
+    "col": 14,
+    "type": "BLOCK"
+  },
+  {
+    "row": 10,
+    "col": 15,
+    "type": "BLOCK"
+  },
+  {
+    "row": 11,
+    "col": 0,
+    "type": "BLOCK"
+  },
+  {
+    "row": 11,
+    "col": 1,
+    "type": "BLOCK"
+  },
+  {
+    "row": 11,
+    "col": 2,
+    "type": "BLOCK"
+  },
+  {
+    "row": 11,
+    "col": 3,
+    "type": "BLOCK"
+  },
+  {
+    "row": 11,
+    "col": 4,
+    "type": "BLOCK"
+  },
+  {
+    "row": 11,
+    "col": 5,
+    "type": "BLOCK"
+  },
+  {
+    "row": 11,
+    "col": 6,
+    "type": "BLOCK"
+  },
+  {
+    "row": 11,
+    "col": 7,
+    "type": "BLOCK"
+  },
+  {
+    "row": 11,
+    "col": 8,
+    "type": "BLOCK"
+  },
+  {
+    "row": 11,
+    "col": 9,
+    "type": "BLOCK"
+  },
+  {
+    "row": 11,
+    "col": 10,
+    "type": "BLOCK"
+  },
+  {
+    "row": 11,
+    "col": 11,
+    "type": "BLOCK"
+  },
+  {
+    "row": 11,
+    "col": 12,
+    "type": "BLOCK"
+  },
+  {
+    "row": 11,
+    "col": 13,
+    "type": "BLOCK"
+  },
+  {
+    "row": 11,
+    "col": 14,
+    "type": "BLOCK"
+  },
+  {
+    "row": 11,
+    "col": 15,
+    "type": "BLOCK"
+  },
+  {
+    "row": 12,
+    "col": 0,
+    "type": "BLOCK"
+  },
+  {
+    "row": 12,
+    "col": 1,
+    "type": "BLOCK"
+  },
+  {
+    "row": 12,
+    "col": 2,
+    "type": "BLOCK"
+  },
+  {
+    "row": 12,
+    "col": 3,
+    "type": "BLOCK"
+  },
+  {
+    "row": 12,
+    "col": 4,
+    "type": "BLOCK"
+  },
+  {
+    "row": 12,
+    "col": 5,
+    "type": "BLOCK"
+  },
+  {
+    "row": 12,
+    "col": 6,
+    "type": "BLOCK"
+  },
+  {
+    "row": 12,
+    "col": 7,
+    "type": "BLOCK"
+  },
+  {
+    "row": 12,
+    "col": 8,
+    "type": "BLOCK"
+  },
+  {
+    "row": 12,
+    "col": 9,
+    "type": "BLOCK"
+  },
+  {
+    "row": 12,
+    "col": 10,
+    "type": "BLOCK"
+  },
+  {
+    "row": 12,
+    "col": 11,
+    "type": "BLOCK"
+  },
+  {
+    "row": 12,
+    "col": 12,
+    "type": "BLOCK"
+  },
+  {
+    "row": 12,
+    "col": 13,
+    "type": "BLOCK"
+  },
+  {
+    "row": 12,
+    "col": 14,
+    "type": "BLOCK"
+  },
+  {
+    "row": 12,
+    "col": 15,
+    "type": "BLOCK"
+  },
+  {
+    "row": 13,
+    "col": 0,
+    "type": "BLOCK"
+  },
+  {
+    "row": 13,
+    "col": 1,
+    "type": "BLOCK"
+  },
+  {
+    "row": 13,
+    "col": 2,
+    "type": "BLOCK"
+  },
+  {
+    "row": 13,
+    "col": 3,
+    "type": "BLOCK"
+  },
+  {
+    "row": 13,
+    "col": 4,
+    "type": "BLOCK"
+  },
+  {
+    "row": 13,
+    "col": 5,
+    "type": "BLOCK"
+  },
+  {
+    "row": 13,
+    "col": 6,
+    "type": "BLOCK"
+  },
+  {
+    "row": 13,
+    "col": 7,
+    "type": "BLOCK"
+  },
+  {
+    "row": 13,
+    "col": 8,
+    "type": "BLOCK"
+  },
+  {
+    "row": 13,
+    "col": 9,
+    "type": "BLOCK"
+  },
+  {
+    "row": 13,
+    "col": 10,
+    "type": "BLOCK"
+  },
+  {
+    "row": 13,
+    "col": 11,
+    "type": "BLOCK"
+  },
+  {
+    "row": 13,
+    "col": 12,
+    "type": "BLOCK"
+  },
+  {
+    "row": 13,
+    "col": 13,
+    "type": "BLOCK"
+  },
+  {
+    "row": 13,
+    "col": 14,
+    "type": "BLOCK"
+  },
+  {
+    "row": 13,
+    "col": 15,
+    "type": "BLOCK"
+  },
+  {
+    "row": 14,
+    "col": 0,
+    "type": "BLOCK"
+  },
+  {
+    "row": 14,
+    "col": 1,
+    "type": "BLOCK"
+  },
+  {
+    "row": 14,
+    "col": 2,
+    "type": "BLOCK"
+  },
+  {
+    "row": 14,
+    "col": 3,
+    "type": "BLOCK"
+  },
+  {
+    "row": 14,
+    "col": 4,
+    "type": "BLOCK"
+  },
+  {
+    "row": 14,
+    "col": 5,
+    "type": "BLOCK"
+  },
+  {
+    "row": 14,
+    "col": 6,
+    "type": "BLOCK"
+  },
+  {
+    "row": 14,
+    "col": 7,
+    "type": "BLOCK"
+  },
+  {
+    "row": 14,
+    "col": 8,
+    "type": "BLOCK"
+  },
+  {
+    "row": 14,
+    "col": 9,
+    "type": "BLOCK"
+  },
+  {
+    "row": 14,
+    "col": 10,
+    "type": "BLOCK"
+  },
+  {
+    "row": 14,
+    "col": 11,
+    "type": "BLOCK"
+  },
+  {
+    "row": 14,
+    "col": 12,
+    "type": "BLOCK"
+  },
+  {
+    "row": 14,
+    "col": 13,
+    "type": "BLOCK"
+  },
+  {
+    "row": 14,
+    "col": 14,
+    "type": "BLOCK"
+  },
+  {
+    "row": 14,
+    "col": 15,
+    "type": "BLOCK"
+  },
+  {
+    "row": 15,
+    "col": 0,
+    "type": "BLOCK"
+  },
+  {
+    "row": 15,
+    "col": 1,
+    "type": "BLOCK"
+  },
+  {
+    "row": 15,
+    "col": 2,
+    "type": "BLOCK"
+  },
+  {
+    "row": 15,
+    "col": 3,
+    "type": "BLOCK"
+  },
+  {
+    "row": 15,
+    "col": 4,
+    "type": "BLOCK"
+  },
+  {
+    "row": 15,
+    "col": 5,
+    "type": "BLOCK"
+  },
+  {
+    "row": 15,
+    "col": 6,
+    "type": "BLOCK"
+  },
+  {
+    "row": 15,
+    "col": 7,
+    "type": "BLOCK"
+  },
+  {
+    "row": 15,
+    "col": 8,
+    "type": "BLOCK"
+  },
+  {
+    "row": 15,
+    "col": 9,
+    "type": "BLOCK"
+  },
+  {
+    "row": 15,
+    "col": 10,
+    "type": "BLOCK"
+  },
+  {
+    "row": 15,
+    "col": 11,
+    "type": "BLOCK"
+  },
+  {
+    "row": 15,
+    "col": 12,
+    "type": "BLOCK"
+  },
+  {
+    "row": 15,
+    "col": 13,
+    "type": "BLOCK"
+  },
+  {
+    "row": 15,
+    "col": 14,
+    "type": "BLOCK"
+  },
+  {
+    "row": 15,
+    "col": 15,
+    "type": "BLOCK"
+  }
+]

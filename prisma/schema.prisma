@@ -1,0 +1,273 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────
+
+enum Role {
+  USER
+  MODERATOR
+  ADMIN
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum GameStatus {
+  IN_PROGRESS
+  COMPLETED
+  ABANDONED
+}
+
+enum Plan {
+  FREE
+  PREMIUM
+}
+
+enum PurchaseType {
+  GAME_PACK   // Oyun paketi satın alma (örn. 10 oyun)
+  SUBSCRIPTION_WEEKLY
+  SUBSCRIPTION_MONTHLY
+  SUBSCRIPTION_YEARLY
+}
+
+enum PurchaseStatus {
+  PENDING
+  VERIFIED
+  FAILED
+  REFUNDED
+}
+
+enum PurchasePlatform {
+  APPLE
+  GOOGLE
+}
+
+// ─────────────────────────────────────────────
+// USER
+// ─────────────────────────────────────────────
+
+model User {
+  id           String   @id @default(cuid())
+  email        String?  @unique
+  username     String   @unique
+  displayName  String?
+  avatar       String?
+  passwordHash String?
+  googleId     String?  @unique
+  appleId      String?  @unique
+  role         Role     @default(USER)
+
+  // Plan
+  plan           Plan     @default(FREE)
+  planExpiresAt  DateTime? // null = süresiz veya FREE
+
+  // Günlük limit (FREE kullanıcılar için)
+  dailyGamesUsed Int      @default(0)
+  dailyResetAt   DateTime @default(now())
+
+  // Stats
+  totalScore   Int @default(0)
+  gamesPlayed  Int @default(0)
+  bestScore    Int @default(0)
+  totalCorrect Int @default(0)
+  totalWrong   Int @default(0)
+
+  isActive  Boolean  @default(true)
+  resetPasswordToken     String?   @unique
+  resetPasswordExpires   DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  gameSessions  GameSession[]
+  refreshTokens RefreshToken[]
+  purchases     Purchase[]
+  deviceTokens  DeviceToken[]
+  reports       Report[]
+  tickets       SupportTicket[]
+
+  @@map("users")
+}
+
+// ─────────────────────────────────────────────
+// REFRESH TOKEN
+// ─────────────────────────────────────────────
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}
+
+// ─────────────────────────────────────────────
+// CATEGORY
+// ─────────────────────────────────────────────
+
+model Category {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  description String?
+  icon        String?
+  color       String? @default("#6C63FF")
+  isActive    Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  puzzles      Puzzle[]
+
+  @@map("categories")
+}
+
+// ─────────────────────────────────────────────
+// PUZZLE (ÇENGEL BULMACA)
+// ─────────────────────────────────────────────
+
+model Puzzle {
+  id          String     @id @default(cuid())
+  title       String
+  difficulty  Difficulty @default(MEDIUM)
+  width       Int        @default(10)
+  height      Int        @default(10)
+  gridData    Json       // [{ row, col, type: 'BLOCK'|'CLUE'|'LETTER', clueText, answer, arrowDir }]
+  points      Int        @default(100)
+  categoryId  String?
+  isActive    Boolean    @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  category      Category?      @relation(fields: [categoryId], references: [id])
+  gameSessions  GameSession[]
+  reports       Report[]
+
+  @@map("puzzles")
+}
+
+// ─────────────────────────────────────────────
+// GAME SESSION
+// ─────────────────────────────────────────────
+
+model GameSession {
+  id             String     @id @default(cuid())
+  userId         String
+  puzzleId       String
+  status         GameStatus @default(IN_PROGRESS)
+  score          Int        @default(0)
+  completedCells Json?      // [{ row, col, letter }] - kullanıcının doğru girdiği hücreler
+  startedAt      DateTime   @default(now())
+  finishedAt     DateTime?
+
+  user     User      @relation(fields: [userId], references: [id])
+  puzzle   Puzzle    @relation(fields: [puzzleId], references: [id])
+
+  @@map("game_sessions")
+}
+
+// ─────────────────────────────────────────────
+// PURCHASE (IAP - Apple & Google)
+// ─────────────────────────────────────────────
+
+model Purchase {
+  id              String           @id @default(cuid())
+  userId          String
+  platform        PurchasePlatform
+  purchaseType    PurchaseType
+  productId       String           // App Store / Play Store ürün ID'si
+  receiptData     String           // Apple receipt / Google token
+  transactionId   String?          @unique
+  status          PurchaseStatus   @default(PENDING)
+  expiresAt       DateTime?        // Subscription ise bitiş tarihi
+  verifiedAt      DateTime?
+  createdAt       DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("purchases")
+}
+
+// ─────────────────────────────────────────────
+// DEVICE TOKEN (Push Notification)
+// ─────────────────────────────────────────────
+
+model DeviceToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  platform  String   // "ios" | "android"
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("device_tokens")
+}
+// ─────────────────────────────────────────────
+// SYSTEM SETTINGS
+// ─────────────────────────────────────────────
+
+model SystemSettings {
+  id    String @id @default("current")
+  data  Json   // { hintCostLetter, hintCostSolve, adFrequency, dailyBonusAmount, ... }
+
+  updatedAt DateTime @updatedAt
+
+  @@map("system_settings")
+}// ─────────────────────────────────────────────
+// FEEDBACK & SUPPORT
+// ─────────────────────────────────────────────
+
+enum FeedbackStatus {
+  PENDING
+  IN_PROGRESS
+  RESOLVED
+  DISMISSED
+}
+
+model Report {
+  id        String         @id @default(cuid())
+  userId    String
+  puzzleId  String?
+  type      String         // "ERROR", "SUGGESTION", "OTHER"
+  message   String
+  status    FeedbackStatus @default(PENDING)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  user   User    @relation(fields: [userId], references: [id])
+  puzzle Puzzle? @relation(fields: [puzzleId], references: [id])
+
+  @@map("reports")
+}
+
+model SupportTicket {
+  id        String         @id @default(cuid())
+  userId    String
+  subject   String
+  message   String
+  response  String?
+  status    FeedbackStatus @default(PENDING)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("support_tickets")
+}
