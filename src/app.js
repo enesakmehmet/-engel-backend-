@@ -21,6 +21,7 @@ const settingsRoutes    = require('./routes/settings.routes');
 const webhookRoutes     = require('./routes/webhook.routes');
 
 const app = express();
+app.set('trust proxy', 1);
 
 const localOrigins = [
   'http://localhost:3000',
@@ -75,6 +76,10 @@ app.use(morgan('combined', {
 
 // Webhook route'ları rate limiter'dan hariç tut
 app.use((req, res, next) => {
+  if (req.method === 'OPTIONS' || req.path === '/health' || req.path.startsWith('/webhooks')) {
+    return next();
+  }
+
   if (!req.path.startsWith('/webhooks')) {
     return defaultLimiter(req, res, next);
   }
