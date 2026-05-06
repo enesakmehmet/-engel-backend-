@@ -2,12 +2,13 @@ const router = require('express').Router();
 const ctrl = require('../controllers/auth.controller');
 const { authenticate } = require('../middleware/auth');
 const { authLimiter } = require('../middleware/rateLimiter');
-const { validate, registerSchema, loginSchema, googleAuthSchema, forgotPasswordSchema, resetPasswordSchema } = require('../middleware/validate');
+const { validate, registerSchema, loginSchema, googleAuthSchema, firebaseAuthSchema, forgotPasswordSchema, resetPasswordSchema } = require('../middleware/validate');
 
 router.post('/register', authLimiter, validate(registerSchema), ctrl.register);
 router.post('/login',    authLimiter, validate(loginSchema),    ctrl.login);
 router.post('/guest',    authLimiter, ctrl.guestLogin);
 router.post('/google',   authLimiter, validate(googleAuthSchema), ctrl.googleAuth);
+router.post('/firebase',  authLimiter, validate(firebaseAuthSchema), ctrl.firebaseAuth);
 router.post('/apple',    authLimiter, ctrl.appleAuth);
 router.post('/refresh',  ctrl.refresh);
 router.post('/logout',   ctrl.logout);

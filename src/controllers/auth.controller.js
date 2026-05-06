@@ -29,6 +29,13 @@ const googleAuth = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
+const firebaseAuth = async (req, res, next) => {
+  try {
+    const result = await authService.firebaseAuth(req.body);
+    return success(res, result, 'Firebase ile giriş başarılı');
+  } catch (err) { next(err); }
+};
+
 const appleAuth = async (req, res, next) => {
   try {
     const result = await authService.appleAuth(req.body);
@@ -204,4 +211,4 @@ const renderResetPage = (req, res) => {
   res.send(html);
 };
 
-module.exports = { register, login, guestLogin, googleAuth, appleAuth, refresh, logout, me, forgotPassword, resetPassword, renderResetPage };
+module.exports = { register, login, guestLogin, googleAuth, firebaseAuth, appleAuth, refresh, logout, me, forgotPassword, resetPassword, renderResetPage };

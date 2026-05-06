@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const prisma = require('../utils/prisma');
 const { generateAccessToken, generateRefreshToken, verifyRefreshToken } = require('../utils/jwt');
 const mailService = require('./mail.service');
+const { verifyFirebaseIdToken } = require('../utils/firebase');
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -66,6 +67,60 @@ const login = async ({ email, password }) => {
   const tokens = await _issueTokens(user.id);
   const { passwordHash, isActive, ...safeUser } = user;
   return { user: buildSafeUser(safeUser, { isGuest: false }), ...tokens };
+};
+
+// ── Firebase Auth Exchange ──────────────────
+const firebaseAuth = async ({ idToken, provider }) => {
+  const decoded = await verifyFirebaseIdToken(idToken);
+  const email = decoded.email || null;
+  const displayName = decoded.name || decoded.email?.split('@')[0] || decoded.uid;
+  const avatar = decoded.picture || null;
+  const providerData = decoded.firebase?.sign_in_provider || null;
+  const identityProvider = provider || providerData || 'firebase';
+
+  let user = await prisma.user.findFirst({
+    where: {
+      OR: [
+        email ? { email } : null,
+        decoded.uid ? { firebaseUid: decoded.uid } : null,
+      ].filter(Boolean),
+    },
+  });
+
+  if (!user) {
+    const usernameBase = displayName || (email ? email.split('@')[0] : decoded.uid);
+    const username = await generateUsername(usernameBase);
+    user = await prisma.user.create({
+      data: {
+        email,
+        username,
+        displayName,
+        avatar,
+        firebaseUid: decoded.uid,
+        totalScore: 200,
+        // Firebase users are treated as normal registered users in the app.
+      },
+    });
+
+    if (email) {
+      mailService.sendWelcomeEmail(email, user.username).catch(console.error);
+    }
+  } else if (!user.firebaseUid) {
+    user = await prisma.user.update({
+      where: { id: user.id },
+      data: { firebaseUid: decoded.uid },
+    });
+  }
+
+  if (!user.isActive) throw Object.assign(new Error('Hesap devre dışı'), { statusCode: 403 });
+
+  const tokens = await _issueTokens(user.id);
+  const { passwordHash, ...safeUser } = user;
+  return {
+    provider: identityProvider,
+    user: buildSafeUser(safeUser, { isGuest: false }),
+    ...tokens,
+  };
 };
 
 // ── Google OAuth ───────────────────────────
@@ -255,4 +310,4 @@ const resetPassword = async (token, newPassword) => {
   return { message: 'Şifreniz başarıyla güncellendi' };
 };
 
-module.exports = { register, login, guestLogin, googleAuth, appleAuth, refreshToken, logout, forgotPassword, resetPassword };
+module.exports = { register, login, guestLogin, googleAuth, firebaseAuth, appleAuth, refreshToken, logout, forgotPassword, resetPassword };

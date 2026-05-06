@@ -36,7 +36,15 @@ const loginSchema = z.object({
 
 const googleAuthSchema = z.object({
   body: z.object({
-    idToken: z.string().min(1, 'Google ID token gerekli'),
+    idToken: z.string().min(1, 'Google ID token gerekli').optional(),
+    firebaseIdToken: z.string().min(1, 'Firebase ID token gerekli').optional(),
+  }),
+});
+
+const firebaseAuthSchema = z.object({
+  body: z.object({
+    idToken: z.string().min(1, 'Firebase ID token gerekli'),
+    provider: z.enum(['google.com', 'apple.com', 'firebase']).optional(),
   }),
 });
 
@@ -115,6 +123,7 @@ module.exports = {
   registerSchema,
   loginSchema,
   googleAuthSchema,
+  firebaseAuthSchema,
   startGameSchema,
   answerSchema,
   hintSchema,

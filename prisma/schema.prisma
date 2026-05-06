@@ -66,6 +66,7 @@ model User {
   passwordHash String?
   googleId     String?  @unique
   appleId      String?  @unique
+  firebaseUid  String?  @unique
   role         Role     @default(USER)
 
   // Plan
