@@ -1,6 +1,5 @@
 require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
@@ -23,28 +22,51 @@ const webhookRoutes     = require('./routes/webhook.routes');
 
 const app = express();
 
-const allowedOrigins = (process.env.CLIENT_URLS || process.env.CLIENT_URL || '')
+const localOrigins = [
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+];
+
+const envOrigins = (process.env.CLIENT_URLS || process.env.CLIENT_URL || '')
   .split(',')
   .map((origin) => origin.trim())
   .filter(Boolean);
 
-if (process.env.NODE_ENV !== 'production') {
-  allowedOrigins.push('http://localhost:3000');
-  allowedOrigins.push('http://127.0.0.1:3000');
-}
+const allowedOrigins = [...new Set([...localOrigins, ...envOrigins])];
+
+const corsOptions = {
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  headers: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+};
 
 // ── Güvenlik & temel middleware ─────────────
 app.use(helmet());
 app.use(compression());
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.length === 0) return callback(null, true);
-    if (allowedOrigins.includes(origin)) return callback(null, true);
-    return callback(new Error(`CORS blocked for origin: ${origin}`));
-  },
-  credentials: true,
-}));
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+
+  if (!origin) {
+    return next();
+  }
+
+  if (!allowedOrigins.includes(origin)) {
+    return res.status(403).json({ success: false, message: `CORS blocked for origin: ${origin}` });
+  }
+
+  res.setHeader('Access-Control-Allow-Origin', origin);
+  res.setHeader('Vary', 'Origin');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', corsOptions.methods);
+  res.setHeader('Access-Control-Allow-Headers', corsOptions.headers);
+
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+
+  return next();
+});
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('combined', {
