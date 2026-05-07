@@ -23,30 +23,31 @@ async function parsePuzzleImage(req, res) {
     const imageBase64 = req.file.buffer.toString('base64');
     const mimeType = req.file.mimetype;
 
-    const prompt = `Bu bir Türkçe çengel bulmaca ızgarasının fotoğrafıdır.
+    const prompt = `Bu bir Türkçe çengel bulmaca ızgarasının yüksek çözünürlüklü fotoğrafıdır.
 
-Görevin: Resmi analiz ederek bulmacadaki TÜM ipucu hücrelerini tespit et ve JSON olarak döndür.
+Görevin: Resmi santim santim analiz et. Izgaranın tam satır ve sütun sayısını say ve tüm soru (ipucu) hücrelerini bul.
 
-Kurallar:
-- Izgara hücreleri 0'dan başlayan satır (row) ve sütun (col) indeksleriyle tanımlanır.
-- "İpucu hücresi": İçinde metin yazılı olan, yanında ok işareti bulunan hücredir.
-- Ok aşağı gösteriyorsa arrowDir = "DOWN", sağa gösteriyorsa arrowDir = "RIGHT"
-- Birden fazla metin satırı olabilir, tamamını clueText olarak yaz (tek string, yeni satır yerine boşluk kullan).
-- Izgara boyutunu (width=sütun sayısı, height=satır sayısı) tahmin et.
-- Cevap harflerini bilmiyorsan answer alanını boş bırak ("").
+ÇOK ÖNEMLİ KURALLAR:
+1. Izgaranın kaç sütun (width) ve kaç satır (height) olduğunu dikkatlice say. (Örneğin resimdeki 14 sütun ve 9 satırdan oluşuyor olabilir).
+2. Izgara sol üstten (0,0) başlar. X ekseni 'col', Y ekseni 'row' indeksidir.
+3. İpucu hücresi: İçinde soru yazan, kalın çerçeveli ve cevap yönünü gösteren bir ok barındıran hücredir.
+4. Ok işareti AŞAĞI gösteriyorsa arrowDir = "DOWN", SAĞA gösteriyorsa arrowDir = "RIGHT" yap.
+5. Aynı hücrede 2 farklı soru/ok varsa, bunları JSON'da 2 ayrı obje olarak belirt.
+6. "answerLength": Oku takip eden yöndeki boş beyaz kutucukların (harf yazılacak yerlerin) sayısını kesinlikle say ve yaz.
+7. Eğer bulmacanın cevabını biliyorsan "answer" alanına BÜYÜK HARFLERLE yaz, bilmiyorsan boş string ("") bırak. 
 
-Kesinlikle SADECE aşağıdaki JSON formatını döndür, başka hiçbir şey yazma:
-
+SADECE geçerli JSON döndür:
 {
   "width": <sütun sayısı>,
   "height": <satır sayısı>,
   "clues": [
     {
-      "row": <ipucu hücresinin satır indeksi, 0'dan başlar>,
-      "col": <ipucu hücresinin sütun indeksi, 0'dan başlar>,
-      "clueText": "<ipucu metni>",
+      "row": <y indeksi, 0'dan başlar>,
+      "col": <x indeksi, 0'dan başlar>,
+      "clueText": "<soru metni>",
       "arrowDir": "RIGHT" veya "DOWN",
-      "answer": "<cevap varsa büyük harf, yoksa boş string>"
+      "answerLength": <cevap kutucuğu sayısı>,
+      "answer": "<biliyorsan kelime>"
     }
   ]
 }`;
