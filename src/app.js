@@ -19,6 +19,7 @@ const notificationRoutes= require('./routes/notification.routes');
 const feedbackRoutes    = require('./routes/feedback.routes');
 const settingsRoutes    = require('./routes/settings.routes');
 const webhookRoutes     = require('./routes/webhook.routes');
+const puzzleOcrRoutes   = require('./routes/puzzle-ocr.routes');
 
 const app = express();
 app.set('trust proxy', 1);
@@ -106,6 +107,7 @@ app.use('/api/notification', notificationRoutes);
 app.use('/api/settings',     settingsRoutes);
 app.use('/api',              feedbackRoutes);
 app.use('/webhooks',         webhookRoutes);
+app.use('/api/admin/puzzles', puzzleOcrRoutes);
 
 // ── 404 handler ─────────────────────────────
 app.use((req, res) => {
