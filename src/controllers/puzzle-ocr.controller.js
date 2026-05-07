@@ -18,7 +18,7 @@ async function parsePuzzleImage(req, res) {
       return res.status(500).json({ success: false, message: 'GEMINI_API_KEY ortam değişkeni tanımlı değil.' });
     }
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
     const imageBase64 = req.file.buffer.toString('base64');
     const mimeType = req.file.mimetype;
