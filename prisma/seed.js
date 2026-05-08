@@ -87,6 +87,17 @@ async function main() {
     throw new Error('Puzzle seed script failed: seed-hurriyet-oyuncu-medium.js');
   }
 
+  const korkuPuzzleSeedPath = path.join(__dirname, '..', 'seed-hurriyet-korku.js');
+  const korkuResult = spawnSync(process.execPath, [korkuPuzzleSeedPath], {
+    cwd: path.join(__dirname, '..'),
+    stdio: 'inherit',
+    env: process.env,
+  });
+
+  if (korkuResult.status !== 0) {
+    throw new Error('Puzzle seed script failed: seed-hurriyet-korku.js');
+  }
+
   console.log('🧹 Eski bulmacalar veritabanından silindi, yeni bulmacalar eklendi.');
 
   console.log('\n🎉 Seed tamamlandı!');
