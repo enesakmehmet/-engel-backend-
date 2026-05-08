@@ -109,21 +109,6 @@ async function main() {
         { row: 5, col: 1, type: 'LETTER', answer: 'L' },
       ]
     },
-    {
-      title: 'İterbiyum Simgesi',
-      width: 15,
-      height: 9,
-      gridData: [
-        { row: 0, col: 0, type: 'CLUE', arrowDir: 'DOWN', clueText: 'İterbiyum simgesi' },
-        { row: 1, col: 0, type: 'CLUE', arrowDir: 'RIGHT', clueText: 'Eski dilde kaş' },
-        { row: 1, col: 1, type: 'LETTER', answer: 'Y' },
-        { row: 2, col: 1, type: 'LETTER', answer: 'B' },
-        { row: 1, col: 1, type: 'LETTER', answer: 'E' },
-        { row: 1, col: 2, type: 'LETTER', answer: 'B' },
-        { row: 1, col: 3, type: 'LETTER', answer: 'R' },
-        { row: 1, col: 4, type: 'LETTER', answer: 'U' },
-      ]
-    }
   ];
 
   for (const p of puzzles) {

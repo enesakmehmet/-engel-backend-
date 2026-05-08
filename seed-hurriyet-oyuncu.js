@@ -7,7 +7,15 @@ async function main() {
     where: { name: 'Günlük Bulmaca' },
   });
 
-  const gridData = JSON.parse(fs.readFileSync('generated_grid_4.json', 'utf8'));
+  const rawGridData = JSON.parse(fs.readFileSync('generated_grid_4.json', 'utf8'));
+  const gridData = rawGridData.map((cell) => (
+    cell && typeof cell === 'object'
+      ? { ...cell, ...(cell.ans ? { answer: cell.ans } : {}) }
+      : cell
+  ));
+
+  const width = Math.max(...gridData.map((cell) => cell.col ?? 0)) + 1;
+  const height = Math.max(...gridData.map((cell) => cell.row ?? 0)) + 1;
 
   const title = 'Hürriyet - Oyuncu Bulmacası';
 
@@ -19,8 +27,8 @@ async function main() {
     data: {
       title: title,
       difficulty: 'HARD',
-      width: 18,
-      height: 18,
+      width,
+      height,
       points: 250,
       categoryId: category?.id,
       gridData: gridData,

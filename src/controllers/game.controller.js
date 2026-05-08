@@ -3,15 +3,13 @@ const { success } = require('../utils/response');
 
 const getPuzzles = async (req, res, next) => {
   try {
-    const data = await gameService.getPuzzles(req.user.id);
-    return success(res, data, 'Bulmacalar getirildi');
+    return success(res, [], 'Bulmaca listeleme devre dışı bırakıldı');
   } catch (err) { next(err); }
 };
 
 const startGame = async (req, res, next) => {
   try {
-    const data = await gameService.startGame(req.user.id, req.body);
-    return success(res, data, 'Oyun başladı', 201);
+    return success(res, null, 'Bulmaca başlatma devre dışı bırakıldı', 403);
   } catch (err) { next(err); }
 };
 

@@ -1,5 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
+const { spawnSync } = require('child_process');
+const path = require('path');
 
 const prisma = new PrismaClient();
 
@@ -29,6 +31,7 @@ async function main() {
     { name: 'Spor', icon: '⚽', color: '#FDCB6E', description: 'Futbol, basketbol ve daha fazlası' },
     { name: 'Coğrafya', icon: '🗺️', color: '#74B9FF', description: 'Ülkeler, başkentler, nehirler' },
     { name: 'Teknoloji', icon: '💻', color: '#A29BFE', description: 'Yazılım, donanım, internet' },
+    { name: 'Günlük Bulmaca', icon: '🧩', color: '#FFB703', description: 'Günlük çengel bulmacalar' },
   ];
 
   const createdCategories = [];
@@ -42,92 +45,49 @@ async function main() {
     console.log(`✅ Kategori: ${c.name}`);
   }
 
-  // Örnek sorular
-  const genelKultur = createdCategories.find((c) => c.name === 'Genel Kültür');
-  const bilim = createdCategories.find((c) => c.name === 'Bilim');
-  const tarih = createdCategories.find((c) => c.name === 'Tarih');
+  await prisma.report.deleteMany({
+    where: {
+      puzzleId: { not: null },
+    },
+  });
 
-  const questions = [
-    {
-      text: "Türkiye'nin başkenti neresidir?",
-      categoryId: genelKultur.id,
-      difficulty: 'EASY',
-      points: 5,
-      timeLimit: 20,
-      options: [
-        { text: 'İstanbul', isCorrect: false },
-        { text: 'Ankara', isCorrect: true },
-        { text: 'İzmir', isCorrect: false },
-        { text: 'Bursa', isCorrect: false },
-      ],
-    },
-    {
-      text: "Işığın havadaki hızı yaklaşık kaç km/s'dir?",
-      categoryId: bilim.id,
-      difficulty: 'MEDIUM',
-      points: 10,
-      timeLimit: 30,
-      options: [
-        { text: '150.000 km/s', isCorrect: false },
-        { text: '200.000 km/s', isCorrect: false },
-        { text: '300.000 km/s', isCorrect: true },
-        { text: '400.000 km/s', isCorrect: false },
-      ],
-    },
-    {
-      text: 'Osmanlı İmparatorluğu hangi yıl kurulmuştur?',
-      categoryId: tarih.id,
-      difficulty: 'MEDIUM',
-      points: 10,
-      timeLimit: 30,
-      options: [
-        { text: '1299', isCorrect: true },
-        { text: '1453', isCorrect: false },
-        { text: '1071', isCorrect: false },
-        { text: '1326', isCorrect: false },
-      ],
-    },
-    {
-      text: 'Suyun kimyasal formülü nedir?',
-      categoryId: bilim.id,
-      difficulty: 'EASY',
-      points: 5,
-      timeLimit: 15,
-      options: [
-        { text: 'H2O', isCorrect: true },
-        { text: 'CO2', isCorrect: false },
-        { text: 'NaCl', isCorrect: false },
-        { text: 'O2', isCorrect: false },
-      ],
-    },
-    {
-      text: "Dünya'nın en büyük okyanusu hangisidir?",
-      categoryId: genelKultur.id,
-      difficulty: 'EASY',
-      points: 5,
-      timeLimit: 20,
-      options: [
-        { text: 'Atlantik Okyanusu', isCorrect: false },
-        { text: 'Hint Okyanusu', isCorrect: false },
-        { text: 'Arktik Okyanusu', isCorrect: false },
-        { text: 'Pasifik Okyanusu', isCorrect: true },
-      ],
-    },
-  ];
+  await prisma.gameSession.deleteMany({});
+  await prisma.puzzle.deleteMany({});
 
-  for (const q of questions) {
-    await prisma.question.create({
-      data: {
-        text: q.text,
-        categoryId: q.categoryId,
-        difficulty: q.difficulty,
-        points: q.points,
-        timeLimit: q.timeLimit,
-        options: { create: q.options },
-      },
-    });
-    console.log(`✅ Soru: ${q.text.slice(0, 40)}...`);
+  const cleanupScriptPath = path.join(__dirname, '..', 'scripts', 'delete-legacy-puzzles.js');
+  const cleanupResult = spawnSync(process.execPath, [cleanupScriptPath], {
+    cwd: path.join(__dirname, '..'),
+    stdio: 'inherit',
+    env: process.env,
+  });
+
+  if (cleanupResult.status !== 0) {
+    throw new Error('Legacy puzzle cleanup script failed: delete-legacy-puzzles.js');
   }
+
+  const puzzleSeedPath = path.join(__dirname, '..', 'seed-hurriyet-oyuncu.js');
+  const result = spawnSync(process.execPath, [puzzleSeedPath], {
+    cwd: path.join(__dirname, '..'),
+    stdio: 'inherit',
+    env: process.env,
+  });
+
+  if (result.status !== 0) {
+    throw new Error('Puzzle seed script failed: seed-hurriyet-oyuncu.js');
+  }
+
+  const mediumPuzzleSeedPath = path.join(__dirname, '..', 'seed-hurriyet-oyuncu-medium.js');
+  const mediumResult = spawnSync(process.execPath, [mediumPuzzleSeedPath], {
+    cwd: path.join(__dirname, '..'),
+    stdio: 'inherit',
+    env: process.env,
+  });
+
+  if (mediumResult.status !== 0) {
+    throw new Error('Puzzle seed script failed: seed-hurriyet-oyuncu-medium.js');
+  }
+
+  console.log('🧹 Eski bulmacalar veritabanından silindi, yeni bulmacalar eklendi.');
 
   console.log('\n🎉 Seed tamamlandı!');
   console.log('📧 Admin: admin@cenegel.com');

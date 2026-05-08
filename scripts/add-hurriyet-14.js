@@ -165,6 +165,7 @@ for (let r = 0; r < HEIGHT; r++) {
 
 async function main() {
   const title = "Klasik Seri Bulmacası - 14";
+  const category = await prisma.category.findFirst({ where: { name: 'Günlük Bulmaca' } });
   
   const oldPuzzles = await prisma.puzzle.findMany({
     where: {
@@ -188,6 +189,7 @@ async function main() {
       width: WIDTH,
       height: HEIGHT,
       points: 150,
+      categoryId: category?.id,
       gridData: gridData,
       isActive: true
     }

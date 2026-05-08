@@ -15,7 +15,7 @@ const getCategories = async () => {
 const getCategory = async (id) => {
   const cat = await prisma.category.findUnique({
     where: { id },
-    include: { _count: { select: { puzzles: true } } },
+    include: { _count: { select: { puzzles: { where: { isActive: true } } } } },
   });
   if (!cat) throw Object.assign(new Error('Kategori bulunamadı'), { statusCode: 404 });
   return cat;

@@ -30,6 +30,7 @@ async function main() {
   ];
 
   const title = 'Genel Kültür Bulmacası - Mini 1';
+  const category = await prisma.category.findFirst({ where: { name: 'Genel Kültür' } });
 
   await prisma.puzzle.deleteMany({ where: { title: { in: ['Test Bulmaca 1', title] } } });
 
@@ -40,6 +41,7 @@ async function main() {
       height: 4,
       gridData: gridData,
       points: 100,
+      categoryId: category?.id,
     }
   });
 
