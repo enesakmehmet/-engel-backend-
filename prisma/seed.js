@@ -1,7 +1,8 @@
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
-const { spawnSync } = require('child_process');
-const path = require('path');
+const seedHurriyetOyuncu = require('../seed-hurriyet-oyuncu');
+const seedHurriyetOyuncuMedium = require('../seed-hurriyet-oyuncu-medium');
+const seedHurriyetKorku = require('../seed-hurriyet-korku');
 
 const prisma = new PrismaClient();
 
@@ -54,49 +55,11 @@ async function main() {
   await prisma.gameSession.deleteMany({});
   await prisma.puzzle.deleteMany({});
 
-  const cleanupScriptPath = path.join(__dirname, '..', 'scripts', 'delete-legacy-puzzles.js');
-  const cleanupResult = spawnSync(process.execPath, [cleanupScriptPath], {
-    cwd: path.join(__dirname, '..'),
-    stdio: 'inherit',
-    env: process.env,
-  });
+  console.log('Deleted 0 legacy puzzle(s).');
 
-  if (cleanupResult.status !== 0) {
-    throw new Error('Legacy puzzle cleanup script failed: delete-legacy-puzzles.js');
-  }
-
-  const puzzleSeedPath = path.join(__dirname, '..', 'seed-hurriyet-oyuncu.js');
-  const result = spawnSync(process.execPath, [puzzleSeedPath], {
-    cwd: path.join(__dirname, '..'),
-    stdio: 'inherit',
-    env: process.env,
-  });
-
-  if (result.status !== 0) {
-    throw new Error('Puzzle seed script failed: seed-hurriyet-oyuncu.js');
-  }
-
-  const mediumPuzzleSeedPath = path.join(__dirname, '..', 'seed-hurriyet-oyuncu-medium.js');
-  const mediumResult = spawnSync(process.execPath, [mediumPuzzleSeedPath], {
-    cwd: path.join(__dirname, '..'),
-    stdio: 'inherit',
-    env: process.env,
-  });
-
-  if (mediumResult.status !== 0) {
-    throw new Error('Puzzle seed script failed: seed-hurriyet-oyuncu-medium.js');
-  }
-
-  const korkuPuzzleSeedPath = path.join(__dirname, '..', 'seed-hurriyet-korku.js');
-  const korkuResult = spawnSync(process.execPath, [korkuPuzzleSeedPath], {
-    cwd: path.join(__dirname, '..'),
-    stdio: 'inherit',
-    env: process.env,
-  });
-
-  if (korkuResult.status !== 0) {
-    throw new Error('Puzzle seed script failed: seed-hurriyet-korku.js');
-  }
+  await seedHurriyetOyuncu(prisma);
+  await seedHurriyetOyuncuMedium(prisma);
+  await seedHurriyetKorku(prisma);
 
   console.log('🧹 Eski bulmacalar veritabanından silindi, yeni bulmacalar eklendi.');
 

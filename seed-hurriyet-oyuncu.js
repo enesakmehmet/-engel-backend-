@@ -1,13 +1,12 @@
 const { PrismaClient } = require('@prisma/client');
 const fs = require('fs');
-const prisma = new PrismaClient();
 
-async function main() {
+async function seedHurriyetOyuncu(prisma) {
   const category = await prisma.category.findFirst({
     where: { name: 'Günlük Bulmaca' },
   });
 
-  const rawGridData = JSON.parse(fs.readFileSync('generated_grid_4.json', 'utf8'));
+  const rawGridData = JSON.parse(fs.readFileSync(`${__dirname}/generated_grid_4.json`, 'utf8'));
   const gridData = rawGridData.map((cell) => (
     cell && typeof cell === 'object'
       ? { ...cell, ...(cell.ans ? { answer: cell.ans } : {}) }
@@ -39,9 +38,14 @@ async function main() {
   console.log(`✅ ${title} başarıyla eklendi! Resimsiz kurgu ile eklendi.`);
 }
 
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(() => prisma.$disconnect());
+module.exports = seedHurriyetOyuncu;
+
+if (require.main === module) {
+  const prisma = new PrismaClient();
+  seedHurriyetOyuncu(prisma)
+    .catch((e) => {
+      console.error(e);
+      process.exit(1);
+    })
+    .finally(() => prisma.$disconnect());
+}
