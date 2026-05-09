@@ -33,11 +33,106 @@ const normalizePuzzleTitle = (title) => {
 };
 
 // ── Bulmaca Seçimi İçin Listeleme ───────────
-const getPuzzles = async (userId) => [];
+const getPuzzles = async (userId) => {
+  const puzzles = await prisma.puzzle.findMany({
+    where: { isActive: true },
+    select: {
+      id: true, title: true, difficulty: true, width: true, height: true, points: true, categoryId: true, createdAt: true
+    },
+    orderBy: { createdAt: 'desc' },
+  });
+
+  const sessions = await prisma.gameSession.findMany({
+    where: { userId },
+    select: { puzzleId: true, status: true, completedCells: true },
+  });
+
+  return puzzles.map(p => {
+    const s = sessions.find(s => s.puzzleId === p.id);
+    const totalLetterCells = p.width && p.height ? Math.floor((p.width * p.height) / 2) : 50; 
+    let progress = 0;
+    
+    if (s && s.completedCells && Array.isArray(s.completedCells)) {
+      progress = Math.min(100, Math.round((s.completedCells.length / totalLetterCells) * 100));
+    }
+    if (s?.status === 'COMPLETED') progress = 100;
+
+    return {
+      ...p,
+      title: normalizePuzzleTitle(p.title),
+      progress,
+      isOwned: !!s, 
+    };
+  });
+};
 
 // ── Bulmaca Başlat (Çengel) ─────────────────
 const startGame = async (userId, { puzzleId, difficulty = 'MEDIUM' }) => {
-  throw Object.assign(new Error('Bulmaca oynama devre dışı bırakıldı'), { statusCode: 403 });
+  let selectedPuzzle = null;
+
+  if (puzzleId) {
+    selectedPuzzle = await prisma.puzzle.findUnique({ where: { id: puzzleId, isActive: true } });
+  } else {
+    const available = await prisma.puzzle.findMany({ where: { difficulty, isActive: true } });
+    if (available.length > 0) {
+      selectedPuzzle = available[Math.floor(Math.random() * available.length)];
+    }
+  }
+
+  if (!selectedPuzzle) throw Object.assign(new Error('Aktif bulmaca bulunamadı'), { statusCode: 404 });
+
+  const existingSession = await prisma.gameSession.findFirst({
+    where: { userId, puzzleId: selectedPuzzle.id },
+  });
+
+  if (existingSession) {
+    return {
+      sessionId: existingSession.id,
+      puzzle: {
+        id: selectedPuzzle.id,
+        title: normalizePuzzleTitle(selectedPuzzle.title),
+        width: selectedPuzzle.width,
+        height: selectedPuzzle.height,
+        gridData: selectedPuzzle.gridData,
+      }
+    };
+  }
+
+  const isOwned = !!existingSession;
+
+  if (!isOwned) {
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    const puzzleCost = selectedPuzzle.points || 150; 
+
+    if (user.totalScore < puzzleCost) {
+      throw Object.assign(new Error(`Bu bulmacayı oynamak için ${puzzleCost} yıldıza ihtiyacınız var. Bakiyeniz: ${user.totalScore} Yıldız. Lütfen yıldız satın alın.`), { statusCode: 403 });
+    }
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: { totalScore: { decrement: puzzleCost } }
+    });
+  }
+
+  const session = await prisma.gameSession.create({
+    data: {
+      userId,
+      puzzleId: selectedPuzzle.id,
+      status: 'IN_PROGRESS',
+      completedCells: [],
+    },
+  });
+
+  return {
+    sessionId: session.id,
+    puzzle: {
+      id: selectedPuzzle.id,
+      title: normalizePuzzleTitle(selectedPuzzle.title),
+      width: selectedPuzzle.width,
+      height: selectedPuzzle.height,
+      gridData: selectedPuzzle.gridData,
+    }
+  };
 };
 
 // ── Mevcut Bulmaca Durumu ───────────────────

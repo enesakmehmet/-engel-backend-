@@ -1,7 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
 
-async function main() {
+async function seedHurriyetKorku(prisma) {
   const category = await prisma.category.findFirst({
     where: { name: 'Günlük Bulmaca' },
   });
@@ -91,9 +90,14 @@ async function main() {
   console.log(`✅ ${title} başarıyla eklendi! (${width}x${height})`);
 }
 
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(() => prisma.$disconnect());
+module.exports = seedHurriyetKorku;
+
+if (require.main === module) {
+  const prisma = new PrismaClient();
+  seedHurriyetKorku(prisma)
+    .catch((e) => {
+      console.error(e);
+      process.exit(1);
+    })
+    .finally(() => prisma.$disconnect());
+}
