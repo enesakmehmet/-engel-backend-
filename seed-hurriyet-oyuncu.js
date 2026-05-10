@@ -18,9 +18,12 @@ async function seedHurriyetOyuncu(prisma) {
 
   const title = 'Hürriyet - Oyuncu Bulmacası';
 
-  await prisma.puzzle.deleteMany({
-    where: { title: title },
-  });
+  const existingPuzzles = await prisma.puzzle.findMany({ where: { title } });
+  if (existingPuzzles.length > 0) {
+    const puzzleIds = existingPuzzles.map(p => p.id);
+    await prisma.gameSession.deleteMany({ where: { puzzleId: { in: puzzleIds } } });
+    await prisma.puzzle.deleteMany({ where: { title } });
+  }
 
   await prisma.puzzle.create({
     data: {

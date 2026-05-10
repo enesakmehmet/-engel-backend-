@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 
 /**
- * "Ayı." (Çizgi film) - Hürriyet Günlük Çengel Bulmaca
+ * "Kuşun ağzındaki çıkıntı" - Hürriyet Çengel Bulmaca
  * Grid: 22 sütun × 15 satır
  *
  * Yerleşim otomatik üretilir:
@@ -14,44 +14,47 @@ const W = 22;
 const H = 15;
 
 const PUZZLE_ENTRIES = [
-  { clueText: '"Ayı." (Çizgi film)', answer: 'YOGI' },
-  { clueText: 'İş, hizmet buyruğu', answer: 'EMİR' },
-  { clueText: 'Asıl, unsur, hipostaz', answer: 'ÖZ' },
-  { clueText: 'Lüfer balığının bir adı', answer: 'KOFANA' },
-  { clueText: 'Eski Sümer su tanrısı', answer: 'ENKİ' },
-  { clueText: "Evropiyum'un simgesi", answer: 'EU' },
-  { clueText: 'Futbol sahası', answer: 'SAHA' },
-  { clueText: 'Konuşması anlaşılmaz', answer: 'PEL' },
-  { clueText: 'Bir tür ince meşin', answer: 'GÜDERİ' },
-  { clueText: 'Sığırcık', answer: 'SAR' },
-  { clueText: 'Çaydaki etkin madde', answer: 'TEİN' },
-  { clueText: 'Alfabenin ilk harfi', answer: 'A' },
-  { clueText: "Galyum'un simgesi", answer: 'GA' },
-  { clueText: 'Okumak işi, kıraat', answer: 'OKUMA' },
-  { clueText: 'Yüce', answer: 'ULU' },
-  { clueText: 'Küfürbaz', answer: 'AĞZI' },
-  { clueText: 'Lübnan plakası', answer: 'RL' },
-  { clueText: 'Şerefe', answer: 'ŞEREF' },
-  { clueText: 'Anadolu ajansı', answer: 'AA' },
-  { clueText: 'Alışma, kaynaşma', answer: 'ÜLFET' },
-  { clueText: 'Eski dilde nevale', answer: 'AZIK' },
-  { clueText: 'Pay', answer: 'HİSSE' },
-  { clueText: 'Slayt', answer: 'DİYA' },
-  { clueText: 'Futa', answer: 'PEŞ' },
-  { clueText: 'Madagaskar plakası', answer: 'RM' },
+  { clueText: 'Kuşun ağzındaki çıkıntı', answer: 'GAGA' },
+  { clueText: 'Huzur içinde...', answer: 'SAKİN' },
+  { clueText: 'İyileştirme', answer: 'TEDAVİ' },
+  { clueText: 'Memleket', answer: 'YURT' },
+  { clueText: 'Anadolu Ajansı', answer: 'AA' },
+  { clueText: 'İlave', answer: 'EK' },
+  { clueText: 'Dolaylı anlatım', answer: 'KİNAYE' },
+  { clueText: 'Gemide demir...', answer: 'ATMA' },
+  { clueText: 'Parafin (Kimya)', answer: 'MUM' },
+  { clueText: 'Namussuz', answer: 'ŞEREFSİZ' },
+  { clueText: 'Sene', answer: 'YIL' },
+  { clueText: 'Japon gülü', answer: 'KAMELYA' },
+  { clueText: 'Açık oluk, kanal', answer: 'ARK' },
+  { clueText: 'Çocuk (Halk ağzı)', answer: 'UŞAK' },
+  { clueText: 'Bir zamk türü', answer: 'ARAP' },
+  { clueText: 'Mahalli', answer: 'YEREL' },
+  { clueText: "Sodyum'un simgesi", answer: 'NA' },
+  { clueText: 'Bir sebze türü', answer: 'PIRASA' },
+  { clueText: 'Keçi tüyü', answer: 'TİFTİK' },
+  { clueText: 'Zamanı gösterir', answer: 'SAAT' },
+  { clueText: 'Enerji (Fizik)', answer: 'ERG' },
+  { clueText: 'Meta', answer: 'MAL' },
+  { clueText: 'Tek, sırf', answer: 'SADE' },
+  { clueText: 'Hizip', answer: 'KLİK' },
+  { clueText: 'Adalet', answer: 'HAK' },
+  { clueText: 'Elektrik direnç birimi', answer: 'OM' },
+  { clueText: 'Kalın, kaba...', answer: 'KABA' },
+  { clueText: 'Bir balık türü', answer: 'HAMSİ' },
+  { clueText: 'Bir zamk türü (2)', answer: 'SAKIZ' },
+  { clueText: 'Sakıncalı durum', answer: 'RİSK' },
+  { clueText: "Molibden'in simgesi", answer: 'MO' },
+  { clueText: 'Valide', answer: 'ANNE' },
+  { clueText: 'Kırmızı', answer: 'AL' },
   { clueText: 'Bir nota', answer: 'RE' },
-  { clueText: 'Laf, söz', answer: 'KELAM' },
-  { clueText: 'Gözleri görmeyen', answer: 'AMA' },
-  { clueText: 'Arka', answer: 'ART' },
-  { clueText: "Krom'un simgesi", answer: 'CR' },
-  { clueText: 'Farazi, tahmini', answer: 'OLASI' },
-  { clueText: 'Bir tür peynir', answer: 'LOR' },
-  { clueText: 'Kükürt elementinin simgesi', answer: 'S' },
-  { clueText: "İyot'un simgesi", answer: 'I' },
-  { clueText: 'Şom ağızlı, kara...', answer: 'UĞU' },
-  { clueText: 'Yansıma, yankı, inikas', answer: 'AKS' },
-  { clueText: 'Bir ekin hastalığı', answer: 'PAS' },
-  { clueText: "Hong Kong'un plakası", answer: 'HK' },
+  { clueText: 'Avrupa Birliği', answer: 'AB' },
+  { clueText: 'Meslek', answer: 'İŞ' },
+  { clueText: 'Aynı doğrultu...', answer: 'AKS' },
+  { clueText: 'Şehzade eğitmeni', answer: 'LALA' },
+  { clueText: 'Özen', answer: 'İTİNA' },
+  { clueText: 'Pis kokan (Halk ağzı)', answer: 'KOKAR' },
+  { clueText: 'Ün, şöhret', answer: 'ŞAN' },
 ];
 
 function layoutOnce(entryOrder) {
@@ -273,10 +276,9 @@ function buildGrid() {
   return best.grid;
 }
 
-async function seedHurriyetAyi(prisma) {
-  const title = 'Hürriyet - Ayı (Çizgi Film)';
+async function seedHurriyetKusun(prisma) {
+  const title = 'Hürriyet - Kuşun Ağzındaki Çıkıntı';
 
-  // Var mı kontrol et
   const existing = await prisma.puzzle.findFirst({ where: { title } });
   if (existing) {
     console.log(`"${title}" zaten mevcut, güncelleniyor...`);
@@ -309,11 +311,11 @@ async function seedHurriyetAyi(prisma) {
   }
 }
 
-module.exports = seedHurriyetAyi;
+module.exports = seedHurriyetKusun;
 
 if (require.main === module) {
   const prisma = new PrismaClient();
-  seedHurriyetAyi(prisma)
+  seedHurriyetKusun(prisma)
     .catch((e) => {
       console.error(e);
       process.exit(1);

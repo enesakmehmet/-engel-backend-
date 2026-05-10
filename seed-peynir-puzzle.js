@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 
 /**
- * "Ayı." (Çizgi film) - Hürriyet Günlük Çengel Bulmaca
+ * "Bir tür peynir" - Hürriyet Çengel Bulmaca
  * Grid: 22 sütun × 15 satır
  *
  * Yerleşim otomatik üretilir:
@@ -14,44 +14,46 @@ const W = 22;
 const H = 15;
 
 const PUZZLE_ENTRIES = [
-  { clueText: '"Ayı." (Çizgi film)', answer: 'YOGI' },
-  { clueText: 'İş, hizmet buyruğu', answer: 'EMİR' },
-  { clueText: 'Asıl, unsur, hipostaz', answer: 'ÖZ' },
-  { clueText: 'Lüfer balığının bir adı', answer: 'KOFANA' },
-  { clueText: 'Eski Sümer su tanrısı', answer: 'ENKİ' },
-  { clueText: "Evropiyum'un simgesi", answer: 'EU' },
-  { clueText: 'Futbol sahası', answer: 'SAHA' },
-  { clueText: 'Konuşması anlaşılmaz', answer: 'PEL' },
-  { clueText: 'Bir tür ince meşin', answer: 'GÜDERİ' },
-  { clueText: 'Sığırcık', answer: 'SAR' },
-  { clueText: 'Çaydaki etkin madde', answer: 'TEİN' },
-  { clueText: 'Alfabenin ilk harfi', answer: 'A' },
-  { clueText: "Galyum'un simgesi", answer: 'GA' },
-  { clueText: 'Okumak işi, kıraat', answer: 'OKUMA' },
-  { clueText: 'Yüce', answer: 'ULU' },
-  { clueText: 'Küfürbaz', answer: 'AĞZI' },
+  { clueText: 'Bir tür peynir', answer: 'KAŞAR' },
+  { clueText: 'Basıcı, yayıncı', answer: 'NAŞİR' },
+  { clueText: 'Sinema oyuncusu', answer: 'ARTİST' },
+  { clueText: 'Eski dilde kovma', answer: 'TARD' },
+  { clueText: 'Kumar oyunu', answer: 'POKER' },
+  { clueText: 'Yayla atılan', answer: 'OK' },
+  { clueText: "Antimon'un simgesi", answer: 'SB' },
+  { clueText: "Çin'in para birimi", answer: 'YUAN' },
+  { clueText: 'Ferman', answer: 'BUYRUK' },
   { clueText: 'Lübnan plakası', answer: 'RL' },
-  { clueText: 'Şerefe', answer: 'ŞEREF' },
+  { clueText: 'Büyük tencere', answer: 'KAZAN' },
+  { clueText: 'Yardımcı yemek', answer: 'GARNİTÜR' },
+  { clueText: 'Mersin\'deki antik bir şehir', answer: 'SOLİ' },
+  { clueText: 'Tibet öküzü', answer: 'YAK' },
+  { clueText: 'Bir cins orkide', answer: 'SALEP' },
+  { clueText: 'Sayı boncuğu', answer: 'ABAKÜS' },
+  { clueText: 'Bayındırlık', answer: 'İMAR' },
+  { clueText: 'Peygamber', answer: 'NEBİ' },
+  { clueText: 'Bıkma, usanma', answer: 'USANÇ' },
+  { clueText: 'Çok tanrılı dinden', answer: 'PAGAN' },
+  { clueText: 'Bir harman türü', answer: 'SAMAN' },
+  { clueText: 'Tavır, davranış', answer: 'EDA' },
   { clueText: 'Anadolu ajansı', answer: 'AA' },
-  { clueText: 'Alışma, kaynaşma', answer: 'ÜLFET' },
-  { clueText: 'Eski dilde nevale', answer: 'AZIK' },
-  { clueText: 'Pay', answer: 'HİSSE' },
-  { clueText: 'Slayt', answer: 'DİYA' },
-  { clueText: 'Futa', answer: 'PEŞ' },
-  { clueText: 'Madagaskar plakası', answer: 'RM' },
-  { clueText: 'Bir nota', answer: 'RE' },
-  { clueText: 'Laf, söz', answer: 'KELAM' },
-  { clueText: 'Gözleri görmeyen', answer: 'AMA' },
-  { clueText: 'Arka', answer: 'ART' },
-  { clueText: "Krom'un simgesi", answer: 'CR' },
-  { clueText: 'Farazi, tahmini', answer: 'OLASI' },
-  { clueText: 'Bir tür peynir', answer: 'LOR' },
-  { clueText: 'Kükürt elementinin simgesi', answer: 'S' },
-  { clueText: "İyot'un simgesi", answer: 'I' },
-  { clueText: 'Şom ağızlı, kara...', answer: 'UĞU' },
-  { clueText: 'Yansıma, yankı, inikas', answer: 'AKS' },
-  { clueText: 'Bir ekin hastalığı', answer: 'PAS' },
-  { clueText: "Hong Kong'un plakası", answer: 'HK' },
+  { clueText: 'Bezginlik anlatan sözcük', answer: 'OF' },
+  { clueText: 'Özgür', answer: 'HÜR' },
+  { clueText: 'Çarpık, eğri ağız', answer: 'YAMUK' },
+  { clueText: 'Dağdan inen sel', answer: 'SEYL' },
+  { clueText: 'Standart boyutlu', answer: 'NORMAL' },
+  { clueText: 'Saflık derecesi', answer: 'AYAR' },
+  { clueText: 'Limited (Kısaltma)', answer: 'LTD' },
+  { clueText: 'Sevgilinin dudağı', answer: 'LEB' },
+  { clueText: 'Eski Sümer su tanrısı', answer: 'ENKİ' },
+  { clueText: "İsrail'in plakası", answer: 'IL' },
+  { clueText: "Ukrayna'nın plakası", answer: 'UA' },
+  { clueText: 'O yere, o yöne', answer: 'ORA' },
+  { clueText: 'Göçebelik', answer: 'GÖÇERLİK' },
+  { clueText: 'Ailesine bakan / Yoksul', answer: 'AİL' },
+  { clueText: 'Alfabenin ilk harfi', answer: 'A' },
+  { clueText: 'Bir cins orkide (2)', answer: 'VANİLYA' },
+  { clueText: 'Lantanın simgesi', answer: 'LA' },
 ];
 
 function layoutOnce(entryOrder) {
@@ -273,10 +275,9 @@ function buildGrid() {
   return best.grid;
 }
 
-async function seedHurriyetAyi(prisma) {
-  const title = 'Hürriyet - Ayı (Çizgi Film)';
+async function seedHurriyetPeynir(prisma) {
+  const title = 'Hürriyet - Bir Tür Peynir';
 
-  // Var mı kontrol et
   const existing = await prisma.puzzle.findFirst({ where: { title } });
   if (existing) {
     console.log(`"${title}" zaten mevcut, güncelleniyor...`);
@@ -309,11 +310,11 @@ async function seedHurriyetAyi(prisma) {
   }
 }
 
-module.exports = seedHurriyetAyi;
+module.exports = seedHurriyetPeynir;
 
 if (require.main === module) {
   const prisma = new PrismaClient();
-  seedHurriyetAyi(prisma)
+  seedHurriyetPeynir(prisma)
     .catch((e) => {
       console.error(e);
       process.exit(1);

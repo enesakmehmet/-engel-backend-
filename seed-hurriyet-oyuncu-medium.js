@@ -8,99 +8,94 @@ async function seedHurriyetOyuncuMedium(prisma) {
   const width = 18;
   const height = 18;
 
-  const cells = new Map();
-  const coordKey = (row, col) => `${row}:${col}`;
+  const words = [
+    { clue: 'Film ya da tiyatroda rol alan kişi', word: 'OYUNCU', dir: 'RIGHT' },
+    { clue: 'Oyun ya da filmin yazılı metni', word: 'SENARYO', dir: 'RIGHT' },
+    { clue: 'Tiyatroda perde açılmadan önceki son tanıtım filmi', word: 'FRAGMAN', dir: 'RIGHT' },
+    { clue: 'Görüntü kaydeden aygıt', word: 'KAMERA', dir: 'RIGHT' },
+    { clue: 'Oyun ya da konserin oynandığı yer', word: 'SAHNE', dir: 'RIGHT' },
+    { clue: 'Filmde yapay ses ve gürültüler', word: 'EFEKT', dir: 'RIGHT' },
+    { clue: 'Gösteriyi izleyen topluluk', word: 'SEYIRCI', dir: 'RIGHT' },
+    { clue: 'Oyunu yöneten kişi', word: 'YONETMEN', dir: 'DOWN' },
+    { clue: 'Oyunda rol alan kişilerin tümü', word: 'KADRO', dir: 'DOWN' },
+    { clue: 'Bir dizinin ya da filmin son bölümü', word: 'FINAL', dir: 'DOWN' },
+    { clue: 'Ses ve görüntülerin birleşimiyle oluşturulan bütünlük', word: 'KURGU', dir: 'DOWN' },
+    { clue: 'Sahnede kullanılan dekor ve eşyaların tümü', word: 'DEKOR', dir: 'DOWN' },
+  ];
 
-  const putCell = (cell) => {
-    cells.set(coordKey(cell.row, cell.col), cell);
-  };
+  const gridWidth = 18;
+  const gridHeight = 18;
+  const grid = Array.from({ length: gridHeight }, () => Array(gridWidth).fill(null));
 
-  const putLetter = (row, col, ch) => {
-    if (row < 0 || row >= height || col < 0 || col >= width) return;
-    const key = coordKey(row, col);
-    const existing = cells.get(key);
-
-    if (existing) {
-      if (existing.type === 'LETTER') {
-        if (!existing.answer) existing.answer = ch;
-        return;
+  function placeWord(wordObj, row, col) {
+    const len = wordObj.word.length;
+    if (wordObj.dir === 'RIGHT') {
+      if (col + len >= gridWidth) return false;
+      for (let i = 0; i <= len; i++) {
+        const existing = grid[row][col + i];
+        if (i === 0) {
+          if (existing !== null) return false;
+        } else {
+          if (existing !== null && (existing.type !== 'LETTER' || existing.letter !== wordObj.word[i - 1])) return false;
+        }
       }
-      if (existing.type === 'CLUE') {
-        return;
+      grid[row][col] = { type: 'CLUE', ...wordObj };
+      for (let i = 0; i < len; i++) grid[row][col + 1 + i] = { type: 'LETTER', letter: wordObj.word[i] };
+    } else {
+      if (row + len >= gridHeight) return false;
+      for (let i = 0; i <= len; i++) {
+        const existing = grid[row + i][col];
+        if (i === 0) {
+          if (existing !== null) return false;
+        } else {
+          if (existing !== null && (existing.type !== 'LETTER' || existing.letter !== wordObj.word[i - 1])) return false;
+        }
       }
-      if (existing.type === 'BLOCK') {
-        existing.type = 'LETTER';
-        existing.answer = ch;
-        cells.set(key, existing);
-        return;
+      grid[row][col] = { type: 'CLUE', ...wordObj };
+      for (let i = 0; i < len; i++) grid[row + 1 + i][col] = { type: 'LETTER', letter: wordObj.word[i] };
+    }
+    return true;
+  }
+
+  for (const word of words) {
+    let placed = false;
+    for (let r = 0; r < gridHeight && !placed; r++) {
+      for (let c = 0; c < gridWidth && !placed; c++) {
+        if (grid[r][c] === null && placeWord(word, r, c)) placed = true;
       }
     }
+    if (!placed) console.log('Bulunamadı:', word.word);
+  }
 
-    putCell({ row, col, type: 'LETTER', answer: ch });
-  };
-
-  const addClueRight = (row, col, clueText, answer) => {
-    putCell({ row, col, type: 'CLUE', arrowDir: 'RIGHT', clueText, ans: answer });
-    const letters = answer.split('');
-    letters.forEach((ch, i) => {
-      const c = col + 1 + i;
-      if (c < width) {
-        putLetter(row, c, ch);
-      }
-    });
-  };
-
-  const addClueDown = (row, col, clueText, answer) => {
-    putCell({ row, col, type: 'CLUE', arrowDir: 'DOWN', clueText, ans: answer });
-    const letters = answer.split('');
-    letters.forEach((ch, i) => {
-      const r = row + 1 + i;
-      if (r < height) {
-        putLetter(r, col, ch);
-      }
-    });
-  };
-
-  // Yatay (RIGHT) ipuçları
-  addClueRight(4, 7, 'Film ya da tiyatroda rol alan kişi', 'OYUNCU');
-  addClueRight(5, 5, 'Oyun ya da filmin yazılı metni', 'SENARYO');
-  addClueRight(8, 3, 'Tiyatroda perde açılmadan önceki son tanıtım filmi', 'FRAGMAN');
-  addClueRight(2, 1, 'Görüntü kaydeden aygıt', 'KAMERA');
-  addClueRight(13, 2, 'Oyun ya da konserin oynandığı yer', 'SAHNE');
-  addClueRight(11, 11, 'Filmde yapay ses ve gürültüler', 'EFEKT');
-  addClueRight(10, 9, 'Gösteriyi izleyen topluluk', 'SEYIRCI');
-
-  // Dikey (DOWN) ipuçları
-  addClueDown(2, 8, 'Oyunu yöneten kişi', 'YONETMEN');
-  addClueDown(6, 6, 'Oyunda rol alan kişilerin tümü', 'KADRO');
-  addClueDown(7, 4, 'Bir dizinin ya da filmin son bölümü', 'FINAL');
-  addClueDown(2, 10, 'Ses ve görüntülerin birleşimiyle oluşturulan bütünlük', 'KURGU');
-  addClueDown(1, 14, 'Sahnede kullanılan dekor ve eşyaların tümü', 'DEKOR');
-
-  // Kalan hücreleri BLOCK ile doldur
-  for (let r = 0; r < height; r += 1) {
-    for (let c = 0; c < width; c += 1) {
-      const key = coordKey(r, c);
-      if (!cells.has(key)) {
-        putCell({ row: r, col: c, type: 'BLOCK' });
+  const gridData = [];
+  for (let r = 0; r < gridHeight; r++) {
+    for (let c = 0; c < gridWidth; c++) {
+      const cell = grid[r][c];
+      if (!cell) {
+        gridData.push({ row: r, col: c, type: 'BLOCK' });
+      } else if (cell.type === 'CLUE') {
+        gridData.push({ row: r, col: c, type: 'CLUE', arrowDir: cell.dir, clueText: cell.clue, ans: cell.word });
+      } else if (cell.type === 'LETTER') {
+        gridData.push({ row: r, col: c, type: 'LETTER', answer: cell.letter });
       }
     }
   }
 
-  const gridData = Array.from(cells.values());
-
   const title = 'Hürriyet - Oyuncu Bulmacası (Orta)';
 
-  await prisma.puzzle.deleteMany({
-    where: { title },
-  });
+  const existingPuzzles = await prisma.puzzle.findMany({ where: { title } });
+  if (existingPuzzles.length > 0) {
+    const puzzleIds = existingPuzzles.map(p => p.id);
+    await prisma.gameSession.deleteMany({ where: { puzzleId: { in: puzzleIds } } });
+    await prisma.puzzle.deleteMany({ where: { title } });
+  }
 
   await prisma.puzzle.create({
     data: {
       title,
       difficulty: 'MEDIUM',
-      width,
-      height,
+      width: gridWidth,
+      height: gridHeight,
       points: 180,
       categoryId: category?.id,
       gridData,
@@ -108,7 +103,7 @@ async function seedHurriyetOyuncuMedium(prisma) {
     },
   });
 
-  console.log(`✅ ${title} başarıyla eklendi! 18x18, MEDIUM zorluk, farklı soru/cevaplarla.`);
+  console.log(`✅ ${title} başarıyla eklendi!`);
 }
 
 module.exports = seedHurriyetOyuncuMedium;

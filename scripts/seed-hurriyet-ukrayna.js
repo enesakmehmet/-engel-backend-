@@ -1,45 +1,41 @@
 const { PrismaClient } = require('@prisma/client');
 
-async function seedHurriyetKorku(prisma) {
+async function seedHurriyetUkrayna(prisma) {
   const category = await prisma.category.findFirst({
     where: { name: 'Günlük Bulmaca' },
   });
 
-  const width = 14;
-  const height = 8;
-  const title = 'Hürriyet - Güçlü Korku Bulmacası';
   const words = [
-    { word: 'PANİK', clue: 'Güçlü korku...', dir: 'DOWN' },
-    { word: 'MEVCUT', clue: 'Elde bulunan...', dir: 'DOWN' },
-    { word: 'AĞABEY', clue: 'Büyük erkek kardeş', dir: 'DOWN' },
-    { word: 'MAUN', clue: 'Akaju', dir: 'DOWN' },
-    { word: 'ÇİTA', clue: 'Benekli bir hayvan', dir: 'DOWN' },
-    { word: 'PLAZMA', clue: 'Kandaki sıvı', dir: 'DOWN' },
-    { word: 'AGNOSTİSİZM', clue: 'Bilinmezcilik', dir: 'DOWN' },
-    { word: 'NOTA', clue: 'Müzik alfabesi', dir: 'RIGHT' },
-    { word: 'BÖRK', clue: 'Bir başlık türü', dir: 'DOWN' },
-    { word: 'VESTA', clue: 'Roma iffet tanrıçası', dir: 'RIGHT' },
-    { word: 'S', clue: 'Kükürt elementinin simgesi', dir: 'DOWN' },
-    { word: 'MANGAL', clue: 'Seyyar ızgara', dir: 'RIGHT' },
-    { word: 'SÜET', clue: 'Yumuşak deri', dir: 'RIGHT' },
-    { word: 'DAMLA', clue: 'Yağmur damlası', dir: 'RIGHT' },
-    { word: 'TAMİK', clue: 'Eski dilde derin hale getirme', dir: 'DOWN' },
-    { word: 'LAKERDA', clue: 'Balıkların tuzlaması', dir: 'RIGHT' },
-    { word: 'GÖK', clue: 'Eski Türklerde Tanrı', dir: 'DOWN' },
-    { word: 'ZIBAK', clue: 'Eski dilde civa', dir: 'DOWN' },
-    { word: 'KIYIM', clue: 'Katliam', dir: 'RIGHT' },
-    { word: 'BALIKÇIL', clue: 'Leyleğe benzer b...', dir: 'DOWN' },
-    { word: 'AA', clue: 'Anadolu ajansı', dir: 'RIGHT' },
-    { word: 'AL', clue: 'Bir renk', dir: 'RIGHT' },
-    { word: 'MORUK', clue: 'Böğürtlen', dir: 'DOWN' },
-    { word: 'OLEİN', clue: 'Bir yağ türü', dir: 'RIGHT' },
-    { word: 'ZOM', clue: 'Çok sarhoş (argo)', dir: 'DOWN' },
-    { word: 'EL', clue: 'Yabancı', dir: 'DOWN' },
-    { word: 'AKTRİS', clue: 'Kadın oyuncu', dir: 'RIGHT' },
-    { word: 'MİTOZ', clue: 'Eşeysiz bölünme', dir: 'RIGHT' },
-    { word: 'R', clue: 'Viteste geri harfi', dir: 'DOWN' },
-    { word: 'AY', clue: "Dünya'nın uydusu", dir: 'RIGHT' },
-    { word: 'MERTÇE', clue: 'Yiğitçe, erkeğe yakışan', dir: 'RIGHT' }
+    { clue: 'Ukrayna plakası', word: 'UA', dir: 'DOWN' },
+    { clue: 'Aktif', word: 'FAAL', dir: 'RIGHT' },
+    { clue: 'Tibet öküzü', word: 'YAK', dir: 'DOWN' },
+    { clue: 'Alfabenin ilk harfi', word: 'A', dir: 'RIGHT' },
+    { clue: 'İşaret çentiği', word: 'KERTE', dir: 'DOWN' },
+    { clue: 'Yüce', word: 'ULVİ', dir: 'RIGHT' },
+    { clue: 'Kalp', word: 'YÜREK', dir: 'DOWN' },
+    { clue: 'Limited (Kısaltma)', word: 'LTD', dir: 'DOWN' },
+    { clue: 'Duygu kapanıklığı', word: 'APATİ', dir: 'DOWN' },
+    { clue: 'Büyük delikli kalbur', word: 'GÖZER', dir: 'DOWN' },
+    { clue: 'Konuşma bozukluğu', word: 'AFAZİ', dir: 'DOWN' },
+    { clue: 'Kareli kumaş', word: 'EKOSE', dir: 'RIGHT' },
+    { clue: 'Bir kuş cinsi', word: 'SAKA', dir: 'RIGHT' },
+    { clue: 'Yön bulucu alet', word: 'PUSULA', dir: 'RIGHT' },
+    { clue: 'Sinek', word: 'CİBİN', dir: 'DOWN' },
+    { clue: 'Ay takvimi 7. ayı', word: 'RECEP', dir: 'RIGHT' },
+    { clue: 'Bir nota', word: 'Mİ', dir: 'RIGHT' },
+    { clue: 'Düzlek yapı', word: 'OVALIK', dir: 'DOWN' },
+    { clue: 'Eklem romatizması', word: 'NİKRİS', dir: 'RIGHT' },
+    { clue: 'Bir meyve', word: 'ELMA', dir: 'RIGHT' },
+    { clue: 'Eğleşme', word: 'İKAMET', dir: 'RIGHT' },
+    { clue: 'Tanrı', word: 'HAK', dir: 'RIGHT' },
+    { clue: 'Eksiksiz', word: 'TAM', dir: 'RIGHT' },
+    { clue: 'Lantanın simgesi', word: 'LA', dir: 'DOWN' },
+    { clue: 'Kilogram (Kısaca)', word: 'KG', dir: 'DOWN' },
+    { clue: 'Otomobil satılan yer', word: 'GALERİ', dir: 'RIGHT' },
+    { clue: 'Yavru', word: 'BALA', dir: 'RIGHT' },
+    { clue: 'Merbut', word: 'BAĞLI', dir: 'RIGHT' },
+    { clue: 'Roma imparatorlarının tacı', word: 'TİARA', dir: 'RIGHT' },
+    { clue: 'Gabon plaka işareti', word: 'G', dir: 'RIGHT' }
   ];
 
   const gridWidth = 18;
@@ -100,6 +96,8 @@ async function seedHurriyetKorku(prisma) {
     }
   }
 
+  const title = 'Hürriyet - Ukrayna Plakası Bulmacası';
+
   const existingPuzzles = await prisma.puzzle.findMany({ where: { title } });
   if (existingPuzzles.length > 0) {
     const puzzleIds = existingPuzzles.map(p => p.id);
@@ -120,17 +118,14 @@ async function seedHurriyetKorku(prisma) {
     },
   });
 
-  console.log(`✅ ${title} başarıyla eklendi! (${gridWidth}x${gridHeight})`);
+  console.log(`✅ ${title} başarıyla eklendi!`);
 }
 
-module.exports = seedHurriyetKorku;
+module.exports = seedHurriyetUkrayna;
 
 if (require.main === module) {
   const prisma = new PrismaClient();
-  seedHurriyetKorku(prisma)
-    .catch((e) => {
-      console.error(e);
-      process.exit(1);
-    })
+  seedHurriyetUkrayna(prisma)
+    .catch(console.error)
     .finally(() => prisma.$disconnect());
 }

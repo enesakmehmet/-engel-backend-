@@ -1,45 +1,43 @@
 const { PrismaClient } = require('@prisma/client');
 
-async function seedHurriyetKorku(prisma) {
+async function seedHurriyetKadercilik(prisma) {
   const category = await prisma.category.findFirst({
     where: { name: 'Günlük Bulmaca' },
   });
 
-  const width = 14;
-  const height = 8;
-  const title = 'Hürriyet - Güçlü Korku Bulmacası';
   const words = [
-    { word: 'PANİK', clue: 'Güçlü korku...', dir: 'DOWN' },
-    { word: 'MEVCUT', clue: 'Elde bulunan...', dir: 'DOWN' },
-    { word: 'AĞABEY', clue: 'Büyük erkek kardeş', dir: 'DOWN' },
-    { word: 'MAUN', clue: 'Akaju', dir: 'DOWN' },
-    { word: 'ÇİTA', clue: 'Benekli bir hayvan', dir: 'DOWN' },
-    { word: 'PLAZMA', clue: 'Kandaki sıvı', dir: 'DOWN' },
-    { word: 'AGNOSTİSİZM', clue: 'Bilinmezcilik', dir: 'DOWN' },
-    { word: 'NOTA', clue: 'Müzik alfabesi', dir: 'RIGHT' },
-    { word: 'BÖRK', clue: 'Bir başlık türü', dir: 'DOWN' },
-    { word: 'VESTA', clue: 'Roma iffet tanrıçası', dir: 'RIGHT' },
-    { word: 'S', clue: 'Kükürt elementinin simgesi', dir: 'DOWN' },
-    { word: 'MANGAL', clue: 'Seyyar ızgara', dir: 'RIGHT' },
-    { word: 'SÜET', clue: 'Yumuşak deri', dir: 'RIGHT' },
-    { word: 'DAMLA', clue: 'Yağmur damlası', dir: 'RIGHT' },
-    { word: 'TAMİK', clue: 'Eski dilde derin hale getirme', dir: 'DOWN' },
-    { word: 'LAKERDA', clue: 'Balıkların tuzlaması', dir: 'RIGHT' },
-    { word: 'GÖK', clue: 'Eski Türklerde Tanrı', dir: 'DOWN' },
-    { word: 'ZIBAK', clue: 'Eski dilde civa', dir: 'DOWN' },
-    { word: 'KIYIM', clue: 'Katliam', dir: 'RIGHT' },
-    { word: 'BALIKÇIL', clue: 'Leyleğe benzer b...', dir: 'DOWN' },
-    { word: 'AA', clue: 'Anadolu ajansı', dir: 'RIGHT' },
-    { word: 'AL', clue: 'Bir renk', dir: 'RIGHT' },
-    { word: 'MORUK', clue: 'Böğürtlen', dir: 'DOWN' },
-    { word: 'OLEİN', clue: 'Bir yağ türü', dir: 'RIGHT' },
-    { word: 'ZOM', clue: 'Çok sarhoş (argo)', dir: 'DOWN' },
-    { word: 'EL', clue: 'Yabancı', dir: 'DOWN' },
-    { word: 'AKTRİS', clue: 'Kadın oyuncu', dir: 'RIGHT' },
-    { word: 'MİTOZ', clue: 'Eşeysiz bölünme', dir: 'RIGHT' },
-    { word: 'R', clue: 'Viteste geri harfi', dir: 'DOWN' },
-    { word: 'AY', clue: "Dünya'nın uydusu", dir: 'RIGHT' },
-    { word: 'MERTÇE', clue: 'Yiğitçe, erkeğe yakışan', dir: 'RIGHT' }
+    { clue: 'Kadercilik', word: 'FATALİZM', dir: 'DOWN' },
+    { clue: 'Japon mafyası', word: 'YAKUZA', dir: 'RIGHT' },
+    { clue: 'Vekiller, bakanlar', word: 'VÜKELA', dir: 'DOWN' },
+    { clue: 'Gürültü, patırtı', word: 'ŞAMATA', dir: 'RIGHT' },
+    { clue: 'Bundan böyle', word: 'ARTIK', dir: 'RIGHT' },
+    { clue: 'Lüksemburg plaka', word: 'L', dir: 'DOWN' },
+    { clue: 'Bir kış sebzesi', word: 'PIRASA', dir: 'RIGHT' },
+    { clue: 'Çinkonun simgesi', word: 'ZN', dir: 'RIGHT' },
+    { clue: 'Argoda sevgili', word: 'MANİTA', dir: 'RIGHT' },
+    { clue: 'Arttırma, bindirme', word: 'ZAM', dir: 'RIGHT' },
+    { clue: 'Kenarları eşit olan', word: 'EŞKENAR', dir: 'DOWN' },
+    { clue: 'Tüzük', word: 'NİZAMNAME', dir: 'RIGHT' },
+    { clue: 'Galyumun simgesi', word: 'GA', dir: 'DOWN' },
+    { clue: 'Ateşli silah', word: 'TABANCA', dir: 'RIGHT' },
+    { clue: 'Kuş gagası', word: 'MİNKAR', dir: 'DOWN' },
+    { clue: 'Bir yarış yelkenlisi', word: 'KOTRA', dir: 'DOWN' },
+    { clue: 'Telli bir çalgı', word: 'GİTAR', dir: 'DOWN' },
+    { clue: 'Alaka', word: 'İLGİ', dir: 'RIGHT' },
+    { clue: 'İç Anadoluda bir göl', word: 'TUZ', dir: 'RIGHT' },
+    { clue: 'İnce urgan', word: 'SİCİM', dir: 'RIGHT' },
+    { clue: 'Ortodoks resmi', word: 'İKONA', dir: 'DOWN' },
+    { clue: 'Güzel, hoş (kadın)', word: 'RANA', dir: 'RIGHT' },
+    { clue: 'Eski dilde haberci', word: 'SAİ', dir: 'DOWN' },
+    { clue: 'Ribonükleik asit', word: 'RNA', dir: 'DOWN' },
+    { clue: 'Kent', word: 'ŞEHİR', dir: 'RIGHT' },
+    { clue: 'Üzüm kütüğü', word: 'ASMA', dir: 'DOWN' },
+    { clue: 'Anadolu ajansı', word: 'AA', dir: 'RIGHT' },
+    { clue: 'Beyaz', word: 'AK', dir: 'RIGHT' },
+    { clue: 'Akıntılı hastalık', word: 'NEZLE', dir: 'RIGHT' },
+    { clue: 'O yer', word: 'ORA', dir: 'RIGHT' },
+    { clue: 'Tek tohumluk kuru yemiş', word: 'FINDIK', dir: 'RIGHT' },
+    { clue: 'Potasyumun simgesi', word: 'K', dir: 'DOWN' }
   ];
 
   const gridWidth = 18;
@@ -100,6 +98,8 @@ async function seedHurriyetKorku(prisma) {
     }
   }
 
+  const title = 'Hürriyet - Kadercilik Bulmacası';
+
   const existingPuzzles = await prisma.puzzle.findMany({ where: { title } });
   if (existingPuzzles.length > 0) {
     const puzzleIds = existingPuzzles.map(p => p.id);
@@ -120,17 +120,14 @@ async function seedHurriyetKorku(prisma) {
     },
   });
 
-  console.log(`✅ ${title} başarıyla eklendi! (${gridWidth}x${gridHeight})`);
+  console.log(`✅ ${title} başarıyla eklendi!`);
 }
 
-module.exports = seedHurriyetKorku;
+module.exports = seedHurriyetKadercilik;
 
 if (require.main === module) {
   const prisma = new PrismaClient();
-  seedHurriyetKorku(prisma)
-    .catch((e) => {
-      console.error(e);
-      process.exit(1);
-    })
+  seedHurriyetKadercilik(prisma)
+    .catch(console.error)
     .finally(() => prisma.$disconnect());
 }

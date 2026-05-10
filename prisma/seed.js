@@ -3,6 +3,14 @@ const bcrypt = require('bcryptjs');
 const seedHurriyetOyuncu = require('../seed-hurriyet-oyuncu');
 const seedHurriyetOyuncuMedium = require('../seed-hurriyet-oyuncu-medium');
 const seedHurriyetKorku = require('../seed-hurriyet-korku');
+const seedHurriyetAyi = require('../seed-ayi-puzzle');
+const seedHurriyetKusun = require('../seed-kusun-puzzle');
+const seedHurriyetKaragoz = require('../seed-karagoz-puzzle');
+const seedHurriyetPeynir = require('../seed-peynir-puzzle');
+const seedHurriyetSinirbilim = require('../seed-sinirbilim-puzzle');
+const seedHurriyetAcimasizca = require('../seed-acimasizca-puzzle');
+const seedHurriyetIsletmen = require('../seed-isletmen-puzzle');
+const seedHurriyetDuru = require('../seed-duru-puzzle');
 
 const prisma = new PrismaClient();
 
@@ -60,6 +68,14 @@ async function main() {
   await seedHurriyetOyuncu(prisma);
   await seedHurriyetOyuncuMedium(prisma);
   await seedHurriyetKorku(prisma);
+  await seedHurriyetAyi(prisma);
+  await seedHurriyetKusun(prisma);
+  await seedHurriyetKaragoz(prisma);
+  await seedHurriyetPeynir(prisma);
+  await seedHurriyetSinirbilim(prisma);
+  await seedHurriyetAcimasizca(prisma);
+  await seedHurriyetIsletmen(prisma);
+  await seedHurriyetDuru(prisma);
 
   console.log('🧹 Eski bulmacalar veritabanından silindi, yeni bulmacalar eklendi.');
 

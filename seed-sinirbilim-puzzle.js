@@ -1,57 +1,49 @@
 const { PrismaClient } = require('@prisma/client');
 
 /**
- * "Ayı." (Çizgi film) - Hürriyet Günlük Çengel Bulmaca
+ * "Sinirbilim" - Hürriyet Çengel Bulmaca
  * Grid: 22 sütun × 15 satır
- *
- * Yerleşim otomatik üretilir:
- * - En uzun cevaplar önce yerleştirilir
- * - Sonraki cevaplar kesişim noktalarıyla eklenir
- * - Çakışma ve bitişik harf kuralları korunur
  */
 
 const W = 22;
 const H = 15;
 
 const PUZZLE_ENTRIES = [
-  { clueText: '"Ayı." (Çizgi film)', answer: 'YOGI' },
-  { clueText: 'İş, hizmet buyruğu', answer: 'EMİR' },
-  { clueText: 'Asıl, unsur, hipostaz', answer: 'ÖZ' },
-  { clueText: 'Lüfer balığının bir adı', answer: 'KOFANA' },
-  { clueText: 'Eski Sümer su tanrısı', answer: 'ENKİ' },
-  { clueText: "Evropiyum'un simgesi", answer: 'EU' },
-  { clueText: 'Futbol sahası', answer: 'SAHA' },
-  { clueText: 'Konuşması anlaşılmaz', answer: 'PEL' },
-  { clueText: 'Bir tür ince meşin', answer: 'GÜDERİ' },
-  { clueText: 'Sığırcık', answer: 'SAR' },
-  { clueText: 'Çaydaki etkin madde', answer: 'TEİN' },
-  { clueText: 'Alfabenin ilk harfi', answer: 'A' },
-  { clueText: "Galyum'un simgesi", answer: 'GA' },
-  { clueText: 'Okumak işi, kıraat', answer: 'OKUMA' },
-  { clueText: 'Yüce', answer: 'ULU' },
-  { clueText: 'Küfürbaz', answer: 'AĞZI' },
-  { clueText: 'Lübnan plakası', answer: 'RL' },
-  { clueText: 'Şerefe', answer: 'ŞEREF' },
-  { clueText: 'Anadolu ajansı', answer: 'AA' },
-  { clueText: 'Alışma, kaynaşma', answer: 'ÜLFET' },
-  { clueText: 'Eski dilde nevale', answer: 'AZIK' },
-  { clueText: 'Pay', answer: 'HİSSE' },
-  { clueText: 'Slayt', answer: 'DİYA' },
-  { clueText: 'Futa', answer: 'PEŞ' },
-  { clueText: 'Madagaskar plakası', answer: 'RM' },
+  { clueText: 'Sinirbilim', answer: 'NÖROLOJİ' },
+  { clueText: 'Aşırı ulusçuluk', answer: 'ŞOVENİZM' },
+  { clueText: 'Senaryo yazan', answer: 'SENARİST' },
+  { clueText: 'Elde bulunan, var olan', answer: 'MEVCUT' },
+  { clueText: 'Boru sesi', answer: 'DÜT' },
+  { clueText: 'Azı dişi', answer: 'AZI' },
+  { clueText: 'Mali plakası', answer: 'RMM' },
+  { clueText: 'Kayıp', answer: 'ZİYAN' },
+  { clueText: 'Güçlü, şiddetli etki', answer: 'SARSINTI' },
+  { clueText: "İrlanda'nın resmi adı", answer: 'EİRE' },
+  { clueText: 'Söz dinleme, boyun eğme', answer: 'İTAAT' },
+  { clueText: 'Zikreden, anan', answer: 'ZAKİR' },
+  { clueText: 'Beceri gerektiren iş', answer: 'SANAT' },
+  { clueText: 'Bir hayvan', answer: 'AT' },
+  { clueText: 'Güzel, hoş (kadın)', answer: 'AFET' },
+  { clueText: "Amasya'da bir göl", answer: 'BORABAY' },
+  { clueText: 'Pamuktan düz dokuma', answer: 'BEZ' },
+  { clueText: 'Vezir', answer: 'NAZIR' },
+  { clueText: 'Düşkünlük, tutku', answer: 'MERAK' },
+  { clueText: 'Saygı ile ağırlama', answer: 'İZAZ' },
+  { clueText: 'Bir tatlı su balığı', answer: 'SAZAN' },
+  { clueText: "Tayland'ın plaka işareti", answer: 'T' },
+  { clueText: 'Bir edebiyat türü', answer: 'NAZIM' },
+  { clueText: 'Çoban', answer: 'SARBAN' },
+  { clueText: 'Rüşvet', answer: 'BAHŞİŞ' },
+  { clueText: 'Şube, branş', answer: 'DAL' },
+  { clueText: 'Anlak, dirayet', answer: 'ZEKA' },
   { clueText: 'Bir nota', answer: 'RE' },
-  { clueText: 'Laf, söz', answer: 'KELAM' },
-  { clueText: 'Gözleri görmeyen', answer: 'AMA' },
-  { clueText: 'Arka', answer: 'ART' },
-  { clueText: "Krom'un simgesi", answer: 'CR' },
-  { clueText: 'Farazi, tahmini', answer: 'OLASI' },
-  { clueText: 'Bir tür peynir', answer: 'LOR' },
-  { clueText: 'Kükürt elementinin simgesi', answer: 'S' },
-  { clueText: "İyot'un simgesi", answer: 'I' },
-  { clueText: 'Şom ağızlı, kara...', answer: 'UĞU' },
-  { clueText: 'Yansıma, yankı, inikas', answer: 'AKS' },
-  { clueText: 'Bir ekin hastalığı', answer: 'PAS' },
-  { clueText: "Hong Kong'un plakası", answer: 'HK' },
+  { clueText: 'Binek hayvanı', answer: 'AT' },
+  { clueText: 'Utanma duygusu', answer: 'AR' },
+  { clueText: 'Çingene', answer: 'ROMAN' },
+  { clueText: 'Öd', answer: 'SAFRA' },
+  { clueText: 'Büyük, süslü çadır', answer: 'OTAĞ' },
+  { clueText: 'Öncesizlik', answer: 'EZEL' },
+  { clueText: 'Tanrı', answer: 'İLAH' },
 ];
 
 function layoutOnce(entryOrder) {
@@ -64,35 +56,25 @@ function layoutOnce(entryOrder) {
   }
 
   const cellMap = new Map(grid.map((cell) => [`${cell.row}-${cell.col}`, cell]));
-
   const cellAt = (row, col) => cellMap.get(`${row}-${col}`) || null;
-
   const setCell = (row, col, type, extra = {}) => {
     const cell = cellAt(row, col);
     if (!cell) return null;
     Object.assign(cell, { row, col, type }, extra);
     return cell;
   };
-
-  const normalizeAnswer = (answer) => String(answer || '')
-    .trim()
-    .replace(/\s+/g, '')
-    .toUpperCase();
+  const normalizeAnswer = (answer) => String(answer || '').trim().replace(/\s+/g, '').toUpperCase();
 
   const canPlace = (row, col, answer, arrowDir) => {
     const dr = arrowDir === 'DOWN' ? 1 : 0;
     const dc = arrowDir === 'RIGHT' ? 1 : 0;
     const clueRow = row - dr;
     const clueCol = col - dc;
-
     if (clueRow < 0 || clueCol < 0) return false;
-
     const clueCell = cellAt(clueRow, clueCol);
     if (!clueCell || clueCell.type !== 'BLOCK') return false;
-
     const beforeCell = cellAt(row - dr, col - dc);
     if (beforeCell && beforeCell.type !== 'BLOCK') return false;
-
     const afterCell = cellAt(row + dr * answer.length, col + dc * answer.length);
     if (afterCell && afterCell.type !== 'BLOCK') return false;
 
@@ -102,18 +84,15 @@ function layoutOnce(entryOrder) {
       const cell = cellAt(lr, lc);
       if (!cell) return false;
       if (cell.type === 'CLUE') return false;
-
       const letter = answer[i];
       const isCrossing = cell.type === 'LETTER' && cell.answer === letter;
       if (cell.type === 'LETTER' && cell.answer !== letter) return false;
-
       if (arrowDir === 'RIGHT' && !isCrossing) {
         const up = cellAt(lr - 1, lc);
         const down = cellAt(lr + 1, lc);
         if (up && up.type !== 'BLOCK') return false;
         if (down && down.type !== 'BLOCK') return false;
       }
-
       if (arrowDir === 'DOWN' && !isCrossing) {
         const left = cellAt(lr, lc - 1);
         const right = cellAt(lr, lc + 1);
@@ -121,7 +100,6 @@ function layoutOnce(entryOrder) {
         if (right && right.type !== 'BLOCK') return false;
       }
     }
-
     return true;
   };
 
@@ -129,13 +107,7 @@ function layoutOnce(entryOrder) {
     const normalized = normalizeAnswer(answer);
     const dr = arrowDir === 'DOWN' ? 1 : 0;
     const dc = arrowDir === 'RIGHT' ? 1 : 0;
-
-    setCell(row - dr, col - dc, 'CLUE', {
-      clueText,
-      answer: normalized,
-      arrowDir,
-    });
-
+    setCell(row - dr, col - dc, 'CLUE', { clueText, answer: normalized, arrowDir });
     for (let i = 0; i < normalized.length; i++) {
       const lr = row + dr * i;
       const lc = col + dc * i;
@@ -147,14 +119,10 @@ function layoutOnce(entryOrder) {
     const dr = arrowDir === 'DOWN' ? 1 : 0;
     const dc = arrowDir === 'RIGHT' ? 1 : 0;
     let crossingCount = 0;
-
     for (let i = 0; i < answer.length; i++) {
       const cell = cellAt(row + dr * i, col + dc * i);
-      if (cell && cell.type === 'LETTER' && cell.answer === answer[i]) {
-        crossingCount += 1;
-      }
+      if (cell && cell.type === 'LETTER' && cell.answer === answer[i]) crossingCount += 1;
     }
-
     const centerRow = (H - 1) / 2;
     const centerCol = (W - 1) / 2;
     const distance = Math.abs(row - centerRow) + Math.abs(col - centerCol);
@@ -163,15 +131,11 @@ function layoutOnce(entryOrder) {
 
   const findBestPlacement = (answer, usedLetters) => {
     let best = null;
-
     const tryCandidate = (row, col, arrowDir) => {
       if (!canPlace(row, col, answer, arrowDir)) return;
       const score = candidateScore(row, col, answer, arrowDir);
-      if (!best || score > best.score) {
-        best = { row, col, arrowDir, score };
-      }
+      if (!best || score > best.score) best = { row, col, arrowDir, score };
     };
-
     for (const letterCell of usedLetters) {
       for (let i = 0; i < answer.length; i++) {
         if (answer[i] !== letterCell.answer) continue;
@@ -179,25 +143,20 @@ function layoutOnce(entryOrder) {
         tryCandidate(letterCell.row - i, letterCell.col, 'DOWN');
       }
     }
-
     if (best) return best;
-
     for (let row = 0; row < H; row++) {
       for (let col = 1; col < W; col++) {
         tryCandidate(row, col, 'RIGHT');
         tryCandidate(row, col, 'DOWN');
       }
     }
-
     return best;
   };
 
   const usedLetters = [];
   const skipped = [];
-
   const firstEntry = entryOrder[0];
   if (!firstEntry) return { grid, skipped };
-
   const firstRow = Math.floor(H / 2);
   const firstCol = Math.max(2, Math.floor((W - firstEntry.answer.length) / 2));
   if (!canPlace(firstRow, firstCol, firstEntry.answer, 'RIGHT')) {
@@ -205,46 +164,31 @@ function layoutOnce(entryOrder) {
   }
   placeEntry(firstRow, firstCol, firstEntry.clueText, firstEntry.answer, 'RIGHT');
   for (let i = 0; i < firstEntry.answer.length; i++) {
-    usedLetters.push({
-      row: firstRow,
-      col: firstCol + i,
-      answer: firstEntry.answer[i],
-    });
+    usedLetters.push({ row: firstRow, col: firstCol + i, answer: firstEntry.answer[i] });
   }
 
   for (let i = 1; i < entryOrder.length; i++) {
     const entry = entryOrder[i];
     const placement = findBestPlacement(entry.answer, usedLetters);
-    if (!placement) {
-      skipped.push(entry);
-      continue;
-    }
-
+    if (!placement) { skipped.push(entry); continue; }
     placeEntry(placement.row, placement.col, entry.clueText, entry.answer, placement.arrowDir);
-
     for (let j = 0; j < entry.answer.length; j++) {
       const row = placement.row + (placement.arrowDir === 'DOWN' ? j : 0);
       const col = placement.col + (placement.arrowDir === 'RIGHT' ? j : 0);
       const cell = cellAt(row, col);
-      if (cell) {
-        usedLetters.push({ row, col, answer: entry.answer[j] });
-      }
+      if (cell) usedLetters.push({ row, col, answer: entry.answer[j] });
     }
   }
-
   return { grid, skipped };
 }
 
 function buildGrid() {
   const normalize = (answer) => String(answer || '').trim().replace(/\s+/g, '').toUpperCase();
   const baseEntries = PUZZLE_ENTRIES.map((entry, index) => ({
-    ...entry,
-    index,
-    answer: normalize(entry.answer),
+    ...entry, index, answer: normalize(entry.answer),
   })).sort((a, b) => b.answer.length - a.answer.length || a.index - b.index);
 
   const orderings = [baseEntries];
-
   for (let attempt = 1; attempt <= 24; attempt++) {
     const shuffled = [...baseEntries];
     let seed = attempt * 1234567;
@@ -265,58 +209,39 @@ function buildGrid() {
       if (best.skipped.length === 0) break;
     }
   }
-
   if (best.skipped.length > 0) {
     console.warn(`⚠️  ${best.skipped.length} ipucu yerleştirilemedi:`, best.skipped.map((e) => e.clueText));
   }
-
   return best.grid;
 }
 
-async function seedHurriyetAyi(prisma) {
-  const title = 'Hürriyet - Ayı (Çizgi Film)';
-
-  // Var mı kontrol et
+async function seedHurriyetSinirbilim(prisma) {
+  const title = 'Hürriyet - Sinirbilim';
   const existing = await prisma.puzzle.findFirst({ where: { title } });
   if (existing) {
     console.log(`"${title}" zaten mevcut, güncelleniyor...`);
     await prisma.puzzle.update({
       where: { id: existing.id },
-      data: {
-        gridData: buildGrid(),
-        width: W,
-        height: H,
-        difficulty: 'MEDIUM',
-        points: 150,
-      },
+      data: { gridData: buildGrid(), width: W, height: H, difficulty: 'MEDIUM', points: 150 },
     });
     console.log('✅ Güncellendi.');
   } else {
     const category = await prisma.category.findFirst({ where: { name: 'Genel Kültür' } });
     await prisma.puzzle.create({
       data: {
-        title,
-        difficulty: 'MEDIUM',
-        width: W,
-        height: H,
-        points: 150,
-        categoryId: category?.id || null,
-        gridData: buildGrid(),
-        isActive: true,
+        title, difficulty: 'MEDIUM', width: W, height: H, points: 150,
+        categoryId: category?.id || null, gridData: buildGrid(), isActive: true,
       },
     });
     console.log(`✅ "${title}" eklendi.`);
   }
 }
 
-module.exports = seedHurriyetAyi;
+module.exports = seedHurriyetSinirbilim;
 
 if (require.main === module) {
   const prisma = new PrismaClient();
-  seedHurriyetAyi(prisma)
-    .catch((e) => {
-      console.error(e);
-      process.exit(1);
-    })
+  seedHurriyetSinirbilim(prisma)
+    .catch((e) => { console.error(e); process.exit(1); })
     .finally(() => prisma.$disconnect());
 }
