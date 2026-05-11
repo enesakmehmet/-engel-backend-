@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const { upsertPuzzle } = require('./seed-helpers/crossword-layout');
 
-const W = 22, H = 15;
+const W = 24, H = 16;
 
 const PUZZLE_ENTRIES = [
   { clueText: 'Maaş, aylık', answer: 'ÖDENTİ' },

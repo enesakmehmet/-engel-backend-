@@ -35,7 +35,7 @@ const sendPasswordResetEmail = async (email, token) => {
   }
 };
 
-const sendWelcomeEmail = async (email, username) => {
+const sendWelcomeEmail = async (email, username, welcomeBonus = 300) => {
   try {
     if (!resend) {
       console.warn('RESEND_API_KEY is missing; skipping welcome email send.');
@@ -52,7 +52,9 @@ const sendWelcomeEmail = async (email, username) => {
             <h1 style="color: #6C63FF; margin: 0;">NOCTURNE</h1>
             <h2 style="color: #333;">Aramıza Hoş Geldin, ${username}! 🎉</h2>
           </div>
-          <p>Seni aramızda görmek harika! Cenegel ile binlerce çengel bulmacayı çözebilir, skor tablosunda yükselebilir ve zihnini zinde tutabilirsin.</p>
+          <p>Seni aramızda görmek harika! Hesabına başlangıç hediyesi olarak <strong>${welcomeBonus} yıldız</strong> ekledik.</p>
+          <p>Bu yıldızlarla yeni bulmacalar açabilir, skor tablosunda yükselebilir ve zihnini zinde tutabilirsin.</p>
+          <p>Daha fazla yıldız kazanmak istersen reklam izleyerek puan toplayabilir ve daha çok bulmacaya ulaşabilirsin.</p>
           <p>Hemen uygulamaya girip ilk bulmacanı çözmeye ne dersin?</p>
           <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;" />
           <p style="font-size: 12px; color: #888; text-align: center;">Cenegel - Eğlenceli Çengel Bulmaca Deneyimi</p>

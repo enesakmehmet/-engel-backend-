@@ -158,7 +158,7 @@ const getSettings = async () => {
     adFrequency: 3,
     rewardedAdPoints: 50,
     dailyBonusAmount: 50,
-    welcomeBonus: 100,
+    welcomeBonus: 300,
     freeDailyLimit: 3,
     admobEnabled: true,
     customBannerEnabled: false,

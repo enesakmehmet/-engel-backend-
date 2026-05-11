@@ -14,6 +14,7 @@ router.get('/', async (req, res, next) => {
       admobEnabled: true,
       rewardedAdPoints: 50,
       dailyBonusAmount: 50,
+      welcomeBonus: 300,
       customBannerEnabled: false,
       customBannerImageUrl: '',
       customBannerLinkUrl: '',

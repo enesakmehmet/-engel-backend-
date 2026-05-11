@@ -26,6 +26,7 @@ const seedHurriyetIcCamasiri = require('../seed-ic-camasiri-puzzle');
 const seedHurriyetMaas = require('../seed-maas-puzzle');
 const seedHurriyetSara = require('../seed-sara-puzzle');
 const seedHurriyetMaden = require('../seed-maden-puzzle');
+const seedHurriyetDara = require('../seed-dara-puzzle');
 
 const prisma = new PrismaClient();
 
@@ -106,6 +107,7 @@ async function main() {
   await seedHurriyetMaas(prisma);
   await seedHurriyetSara(prisma);
   await seedHurriyetMaden(prisma);
+  await seedHurriyetDara(prisma);
 
   const legacyTitlePuzzles = await prisma.puzzle.findMany({
     where: { title: { startsWith: 'Hürriyet - ' } },

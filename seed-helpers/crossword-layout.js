@@ -142,7 +142,7 @@ function buildGrid(entries, W, H) {
   };
 
   let best = null;
-  for (let attempt = 0; attempt <= 30; attempt++) {
+  for (let attempt = 0; attempt <= 80; attempt++) {
     const result = layoutOnce(buildOrder(attempt), W, H);
     if (!best || result.skipped.length < best.skipped.length) {
       best = result;
@@ -150,15 +150,32 @@ function buildGrid(entries, W, H) {
     }
   }
 
-  // Atılanlar için son şans: çapraz şartı olmaksızın, izole alana yerleştir.
   if (best.skipped.length > 0) {
-    best = forcePlaceSkipped(best, W, H);
+    const forceOrders = [
+      best.skipped,
+      [...best.skipped].sort((a, b) => b.answer.length - a.answer.length || a.index - b.index),
+      [...best.skipped].sort((a, b) => a.answer.length - b.answer.length || a.index - b.index),
+    ];
+
+    let forcedBest = best;
+    for (const skippedOrder of forceOrders) {
+      const forced = forcePlaceSkipped({ grid: cloneGrid(best.grid), skipped: skippedOrder }, W, H);
+      if (forced.skipped.length < forcedBest.skipped.length) {
+        forcedBest = forced;
+        if (forcedBest.skipped.length === 0) break;
+      }
+    }
+    best = forcedBest;
   }
 
   if (best.skipped.length > 0) {
     console.warn(`⚠️  ${best.skipped.length} ipucu yerleştirilemedi:`, best.skipped.map((e) => e.clueText));
   }
   return best.grid;
+}
+
+function cloneGrid(grid) {
+  return grid.map((cell) => ({ ...cell }));
 }
 
 // Atılan ipuçlarını izole boş alanlara, çapraz şartı olmadan yerleştir.
@@ -208,21 +225,30 @@ function forcePlaceSkipped({ grid, skipped }, W, H) {
     }
   };
 
-  for (const entry of skipped) {
-    let placed = false;
-    for (let row = 0; row < H && !placed; row++) {
-      for (let col = 1; col < W && !placed; col++) {
-        if (canForcePlace(row, col, entry.answer, 'RIGHT')) {
-          placeForced(row, col, entry, 'RIGHT');
-          placed = true;
-        } else if (canForcePlace(row, col, entry.answer, 'DOWN')) {
-          placeForced(row, col, entry, 'DOWN');
-          placed = true;
+  let remaining = [...skipped];
+  for (let pass = 0; pass < 3 && remaining.length > 0; pass++) {
+    const nextRemaining = [];
+
+    for (const entry of remaining) {
+      let placed = false;
+      for (let row = 0; row < H && !placed; row++) {
+        for (let col = 1; col < W && !placed; col++) {
+          if (canForcePlace(row, col, entry.answer, 'RIGHT')) {
+            placeForced(row, col, entry, 'RIGHT');
+            placed = true;
+          } else if (canForcePlace(row, col, entry.answer, 'DOWN')) {
+            placeForced(row, col, entry, 'DOWN');
+            placed = true;
+          }
         }
       }
+      if (!placed) nextRemaining.push(entry);
     }
-    if (!placed) stillSkipped.push(entry);
+
+    remaining = nextRemaining;
   }
+
+  stillSkipped.push(...remaining);
 
   return { grid, skipped: stillSkipped };
 }

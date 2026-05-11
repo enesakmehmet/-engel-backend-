@@ -27,6 +27,12 @@ const buildSafeUser = (user, extra = {}) => ({
   ...extra,
 });
 
+const getWelcomeBonus = async () => {
+  const settings = await prisma.systemSettings.findUnique({ where: { id: 'current' } }).catch(() => null);
+  const configuredBonus = Number(settings?.data?.welcomeBonus);
+  return Number.isFinite(configuredBonus) && configuredBonus > 0 ? configuredBonus : 300;
+};
+
 // ── Email / Şifre Kayıt ────────────────────
 const register = async ({ email, username, password, displayName }) => {
   const existingEmail = await prisma.user.findUnique({ where: { email } });
@@ -36,14 +42,15 @@ const register = async ({ email, username, password, displayName }) => {
   if (existingUsername) throw Object.assign(new Error('Bu kullanıcı adı zaten alınmış'), { statusCode: 409 });
 
   const passwordHash = await bcrypt.hash(password, 12);
+  const welcomeBonus = await getWelcomeBonus();
 
   const user = await prisma.user.create({
-    data: { email, username, passwordHash, displayName: displayName || username, totalScore: 200 },
+    data: { email, username, passwordHash, displayName: displayName || username, totalScore: welcomeBonus },
     select: { id: true, email: true, username: true, displayName: true, avatar: true, role: true, plan: true, planExpiresAt: true, totalScore: true },
   });
 
   // Hoş geldin maili gönder (arkaplan işlemi olarak)
-  mailService.sendWelcomeEmail(email, user.username).catch(console.error);
+  mailService.sendWelcomeEmail(email, user.username, welcomeBonus).catch(console.error);
 
 
   const tokens = await _issueTokens(user.id);
@@ -90,6 +97,7 @@ const firebaseAuth = async ({ idToken, provider }) => {
   if (!user) {
     const usernameBase = displayName || (email ? email.split('@')[0] : decoded.uid);
     const username = await generateUsername(usernameBase);
+    const welcomeBonus = await getWelcomeBonus();
     user = await prisma.user.create({
       data: {
         email,
@@ -97,13 +105,13 @@ const firebaseAuth = async ({ idToken, provider }) => {
         displayName,
         avatar,
         firebaseUid: decoded.uid,
-        totalScore: 200,
+        totalScore: welcomeBonus,
         // Firebase users are treated as normal registered users in the app.
       },
     });
 
     if (email) {
-      mailService.sendWelcomeEmail(email, user.username).catch(console.error);
+      mailService.sendWelcomeEmail(email, user.username, welcomeBonus).catch(console.error);
     }
   } else if (!user.firebaseUid) {
     user = await prisma.user.update({
@@ -142,11 +150,12 @@ const googleAuth = async ({ idToken }) => {
     }
   } else {
     const username = await generateUsername(name || email.split('@')[0]);
+    const welcomeBonus = await getWelcomeBonus();
     user = await prisma.user.create({
-      data: { googleId, email, username, displayName: name, avatar: picture, totalScore: 200 },
+      data: { googleId, email, username, displayName: name, avatar: picture, totalScore: welcomeBonus },
     });
     // Yeni kullanıcı, hoş geldin maili gönder
-    if (email) mailService.sendWelcomeEmail(email, user.username).catch(console.error);
+    if (email) mailService.sendWelcomeEmail(email, user.username, welcomeBonus).catch(console.error);
   }
 
   if (!user.isActive) throw Object.assign(new Error('Hesap devre dışı'), { statusCode: 403 });
@@ -159,6 +168,7 @@ const googleAuth = async ({ idToken }) => {
 const guestLogin = async () => {
   const guestSuffix = crypto.randomBytes(4).toString('hex');
   const username = await generateUsername(`guest${guestSuffix}`);
+  const welcomeBonus = await getWelcomeBonus();
 
   const user = await prisma.user.create({
     data: {
@@ -166,7 +176,7 @@ const guestLogin = async () => {
       username,
       displayName: 'Misafir Oyuncu',
       passwordHash: null,
-      totalScore: 200,
+      totalScore: welcomeBonus,
     },
     select: {
       id: true,
@@ -206,11 +216,12 @@ const appleAuth = async ({ idToken, displayName }) => {
     }
   } else {
     const username = await generateUsername(displayName || (email ? email.split('@')[0] : 'appleuser'));
+    const welcomeBonus = await getWelcomeBonus();
     user = await prisma.user.create({
-      data: { appleId, email: email || null, username, displayName: displayName || username, totalScore: 200 },
+      data: { appleId, email: email || null, username, displayName: displayName || username, totalScore: welcomeBonus },
     });
     // Yeni kullanıcı, hoş geldin maili gönder
-    if (email) mailService.sendWelcomeEmail(email, user.username).catch(console.error);
+    if (email) mailService.sendWelcomeEmail(email, user.username, welcomeBonus).catch(console.error);
   }
 
   if (!user.isActive) throw Object.assign(new Error('Hesap devre dışı'), { statusCode: 403 });
