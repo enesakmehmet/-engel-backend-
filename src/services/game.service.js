@@ -86,6 +86,27 @@ const startGame = async (userId, { puzzleId, difficulty = 'MEDIUM' }) => {
   });
 
   if (existingSession) {
+    // Kullanıcı daha önce bu bulmacayı bırakmışsa, aynı oturumu
+    // devam ettir. Aksi halde yardım/cevap akışı "Oyun zaten bitmiş"
+    // hatasına düşebiliyor.
+    if (existingSession.status === 'ABANDONED') {
+      const resumedSession = await prisma.gameSession.update({
+        where: { id: existingSession.id },
+        data: { status: 'IN_PROGRESS', finishedAt: null },
+      });
+
+      return {
+        sessionId: resumedSession.id,
+        puzzle: {
+          id: selectedPuzzle.id,
+          title: normalizePuzzleTitle(selectedPuzzle.title),
+          width: selectedPuzzle.width,
+          height: selectedPuzzle.height,
+          gridData: selectedPuzzle.gridData,
+        }
+      };
+    }
+
     return {
       sessionId: existingSession.id,
       puzzle: {

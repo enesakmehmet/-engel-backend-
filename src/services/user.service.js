@@ -101,6 +101,29 @@ const getStats = async (userId) => {
   return { ...user, accuracy };
 };
 
+// ── Reklam ödülü ────────────────────────────
+const rewardAdStars = async (userId) => {
+  const settings = await prisma.systemSettings.findUnique({ where: { id: 'current' } }).catch(() => null);
+  if (settings?.data?.admobEnabled === false) {
+    throw Object.assign(new Error('Reklamlar kapalı olduğu için ödül alınamaz'), { statusCode: 400 });
+  }
+
+  const configuredReward = Number(settings?.data?.rewardedAdPoints);
+  const rewardAmount = Number.isFinite(configuredReward) && configuredReward > 0 ? configuredReward : 50;
+
+  const user = await prisma.user.update({
+    where: { id: userId },
+    data: { totalScore: { increment: rewardAmount } },
+    select: { id: true, totalScore: true },
+  });
+
+  return {
+    message: `Reklam ödülü olarak +${rewardAmount} ⭐ eklendi`,
+    rewardAmount,
+    totalScore: user.totalScore,
+  };
+};
+
 // ── Şifre Değiştirme ─────────────────────────
 const changePassword = async (userId, { currentPassword, newPassword }) => {
   const bcrypt = require('bcryptjs');
@@ -135,4 +158,4 @@ const deleteAccount = async (userId) => {
   return { message: 'Hesabınız başarıyla silindi' };
 };
 
-module.exports = { getProfile, updateProfile, getGameHistory, getStats, changePassword, deleteAccount };
+module.exports = { getProfile, updateProfile, getGameHistory, getStats, rewardAdStars, changePassword, deleteAccount };

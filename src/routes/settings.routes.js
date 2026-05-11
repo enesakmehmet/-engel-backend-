@@ -12,6 +12,8 @@ router.get('/', async (req, res, next) => {
     const defaultData = {
       adFrequency: 3,
       admobEnabled: true,
+      rewardedAdPoints: 50,
+      dailyBonusAmount: 50,
       customBannerEnabled: false,
       customBannerImageUrl: '',
       customBannerLinkUrl: '',

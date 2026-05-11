@@ -11,6 +11,21 @@ const seedHurriyetSinirbilim = require('../seed-sinirbilim-puzzle');
 const seedHurriyetAcimasizca = require('../seed-acimasizca-puzzle');
 const seedHurriyetIsletmen = require('../seed-isletmen-puzzle');
 const seedHurriyetDuru = require('../seed-duru-puzzle');
+const seedHurriyetAdalar = require('../seed-adalar-puzzle');
+const seedHurriyetMuco = require('../seed-muco-puzzle');
+const seedHurriyetZorla = require('../seed-zorla-puzzle');
+const seedHurriyetVeri = require('../seed-veri-puzzle');
+const seedHurriyetUzunOlta = require('../seed-uzun-olta-puzzle');
+const seedHurriyetCiy = require('../seed-ciy-puzzle');
+const seedHurriyetBrunei = require('../seed-brunei-puzzle');
+const seedHurriyetBoguk = require('../seed-boguk-puzzle');
+const seedHurriyetGeriCevirme = require('../seed-geri-cevirme-puzzle');
+const seedHurriyetKimlik = require('../seed-kimlik-puzzle');
+const seedHurriyetKadercilik = require('../scripts/seed-hurriyet-kadercilik');
+const seedHurriyetIcCamasiri = require('../seed-ic-camasiri-puzzle');
+const seedHurriyetMaas = require('../seed-maas-puzzle');
+const seedHurriyetSara = require('../seed-sara-puzzle');
+const seedHurriyetMaden = require('../seed-maden-puzzle');
 
 const prisma = new PrismaClient();
 
@@ -76,6 +91,36 @@ async function main() {
   await seedHurriyetAcimasizca(prisma);
   await seedHurriyetIsletmen(prisma);
   await seedHurriyetDuru(prisma);
+  await seedHurriyetAdalar(prisma);
+  await seedHurriyetMuco(prisma);
+  await seedHurriyetZorla(prisma);
+  await seedHurriyetVeri(prisma);
+  await seedHurriyetUzunOlta(prisma);
+  await seedHurriyetCiy(prisma);
+  await seedHurriyetBrunei(prisma);
+  await seedHurriyetBoguk(prisma);
+  await seedHurriyetGeriCevirme(prisma);
+  await seedHurriyetKimlik(prisma);
+  await seedHurriyetKadercilik(prisma);
+  await seedHurriyetIcCamasiri(prisma);
+  await seedHurriyetMaas(prisma);
+  await seedHurriyetSara(prisma);
+  await seedHurriyetMaden(prisma);
+
+  const legacyTitlePuzzles = await prisma.puzzle.findMany({
+    where: { title: { startsWith: 'Hürriyet - ' } },
+    select: { id: true, title: true },
+  });
+
+  for (const puzzle of legacyTitlePuzzles) {
+    const cleanedTitle = String(puzzle.title || '').replace(/^Hürriyet\s*-\s*/u, '').trim();
+    if (!cleanedTitle || cleanedTitle === puzzle.title) continue;
+
+    await prisma.puzzle.update({
+      where: { id: puzzle.id },
+      data: { title: cleanedTitle },
+    });
+  }
 
   console.log('🧹 Eski bulmacalar veritabanından silindi, yeni bulmacalar eklendi.');
 

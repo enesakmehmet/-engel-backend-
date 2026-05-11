@@ -156,6 +156,7 @@ const getSettings = async () => {
     hintCostLetter: 20,
     hintCostSolve: 100,
     adFrequency: 3,
+    rewardedAdPoints: 50,
     dailyBonusAmount: 50,
     welcomeBonus: 100,
     freeDailyLimit: 3,
