@@ -94,6 +94,19 @@ const hintSchema = z.object({
   }),
 });
 
+const syncAnswersSchema = z.object({
+  body: z.object({
+    answers: z.array(z.object({
+      row: z.number().int().min(0),
+      col: z.number().int().min(0),
+      letter: z.string().min(1).max(1),
+    })).min(1, 'En az bir cevap gönderin'),
+  }),
+  params: z.object({
+    sessionId: z.string().cuid('Geçersiz session ID'),
+  }),
+});
+
 // ── Question Schemas (Admin) ──────────────────
 
 const createQuestionSchema = z.object({
@@ -127,6 +140,7 @@ module.exports = {
   startGameSchema,
   answerSchema,
   hintSchema,
+  syncAnswersSchema,
   createQuestionSchema,
   createCategorySchema,
   forgotPasswordSchema,

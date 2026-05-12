@@ -354,6 +354,71 @@ const useHintInternal = async (userId, sessionId, { type, row, col }) => {
   return { letter, isFinished, score: session.score, completedCells: completed };
 };
 
+// ── Toplu Cevap Senkronu ─────────────────────
+const syncAnswers = (userId, sessionId, { answers }) =>
+  withSessionLock(sessionId, () => syncAnswersInternal(userId, sessionId, { answers }));
+
+const syncAnswersInternal = async (userId, sessionId, { answers }) => {
+  const session = await prisma.gameSession.findUnique({
+    where: { id: sessionId },
+    include: { puzzle: true },
+  });
+
+  if (!session) throw Object.assign(new Error('Oturum bulunamadı'), { statusCode: 404 });
+  if (session.userId !== userId) throw Object.assign(new Error('Yetkisiz erişim'), { statusCode: 403 });
+  if (session.status !== 'IN_PROGRESS') throw Object.assign(new Error('Oyun zaten bitmiş'), { statusCode: 400 });
+
+  const gridData = session.puzzle.gridData;
+  const gridMap = new Map(
+    gridData
+      .filter((cell) => cell.type === 'LETTER')
+      .map((cell) => [`${cell.row}-${cell.col}`, cell]),
+  );
+
+  const completed = sanitizeCompletedCells(gridData, session.completedCells);
+  let addedCount = 0;
+  let score = session.score;
+
+  for (const item of Array.isArray(answers) ? answers : []) {
+    const key = `${item.row}-${item.col}`;
+    const cell = gridMap.get(key);
+    if (!cell) continue;
+
+    const alreadyCompleted = completed.find((c) => c.row === item.row && c.col === item.col);
+    if (alreadyCompleted) continue;
+
+    if (String(cell.answer || '').toUpperCase() !== String(item.letter || '').toUpperCase()) continue;
+
+    completed.push({ row: item.row, col: item.col, letter: String(item.letter).toUpperCase() });
+    addedCount += 1;
+    const diffPoints = { EASY: 5, MEDIUM: 10, HARD: 20 };
+    score += diffPoints[session.puzzle.difficulty] || 10;
+  }
+
+  const totalLetterCells = gridData.filter((c) => c.type === 'LETTER').length;
+  const isFinished = completed.length === totalLetterCells;
+
+  if (addedCount > 0) {
+    await prisma.gameSession.update({
+      where: { id: sessionId },
+      data: {
+        score,
+        completedCells: completed,
+        status: isFinished ? 'COMPLETED' : 'IN_PROGRESS',
+        finishedAt: isFinished ? new Date() : null,
+      },
+    });
+  }
+
+  return {
+    isCorrect: addedCount > 0,
+    isFinished,
+    score,
+    completedCells: completed,
+    addedCount,
+  };
+};
+
 // ── Oyun Sonucu ─────────────────────────────
 const getSessionResult = async (userId, sessionId) => {
   const session = await prisma.gameSession.findUnique({
@@ -392,4 +457,4 @@ const finishGame = async (sessionId) => {
   return session;
 };
 
-module.exports = { getPuzzles, startGame, getGameStatus, submitAnswer, useHint, finishGame, getSessionResult };
+module.exports = { getPuzzles, startGame, getGameStatus, submitAnswer, useHint, syncAnswers, finishGame, getSessionResult };

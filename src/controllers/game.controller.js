@@ -36,6 +36,13 @@ const useHint = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
+const syncAnswers = async (req, res, next) => {
+  try {
+    const result = await gameService.syncAnswers(req.user.id, req.params.sessionId, req.body);
+    return success(res, result, 'Cevaplar senkronize edildi');
+  } catch (err) { next(err); }
+};
+
 const finishGame = async (req, res, next) => {
   try {
     const result = await gameService.finishGame(req.params.sessionId);
@@ -50,4 +57,4 @@ const getSessionResult = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-module.exports = { getPuzzles, startGame, getGameStatus, submitAnswer, useHint, finishGame, getSessionResult };
+module.exports = { getPuzzles, startGame, getGameStatus, submitAnswer, useHint, syncAnswers, finishGame, getSessionResult };
