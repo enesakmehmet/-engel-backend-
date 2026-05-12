@@ -19,7 +19,7 @@ const LEGACY_PUZZLE_TITLES = {
 
 const normalizePuzzleTitle = (title) => {
   const rawTitle = String(title || '').trim();
-  const classicSeriesMatch = rawTitle.match(/^Hürriyet Klasik Bulmaca(?:\s*-\s*(\d+))?$/u);
+  const classicSeriesMatch = rawTitle.match(/^Hürriyet Klasik Bulmaca(?:\s*[-]\s*(\d+))?$/u);
   if (classicSeriesMatch) {
     return `Klasik Seri Bulmacası - ${classicSeriesMatch[1] || '1'}`;
   }
@@ -30,6 +30,26 @@ const normalizePuzzleTitle = (title) => {
   }
 
   return LEGACY_PUZZLE_TITLES[rawTitle] || rawTitle;
+};
+
+const sanitizeCompletedCells = (gridData, completedCells) => {
+  if (!Array.isArray(gridData) || !Array.isArray(completedCells)) return Array.isArray(completedCells) ? completedCells : [];
+
+  const cellMap = new Map(
+    gridData
+      .filter((cell) => cell && cell.type === 'LETTER')
+      .map((cell) => [`${cell.row}-${cell.col}`, cell]),
+  );
+
+  return completedCells.filter((cell) => {
+    if (!cell) return false;
+    const gridCell = cellMap.get(`${cell.row}-${cell.col}`);
+    if (!gridCell) return false;
+
+    const expected = String(gridCell.answer || '').toUpperCase();
+    const actual = String(cell.letter || '').toUpperCase();
+    return expected.length > 0 && expected === actual;
+  });
 };
 
 // ── Bulmaca Seçimi İçin Listeleme ───────────
@@ -50,6 +70,7 @@ const getPuzzles = async (userId) => {
 
   return puzzles.map(p => {
     const s = sessions.find(s => s.puzzleId === p.id);
+    const sanitizedCompletedCells = sanitizeCompletedCells(p.gridData, s?.completedCells);
     const totalLetterCells = Array.isArray(p.gridData)
       ? p.gridData.filter((cell) => cell.type === 'LETTER').length
       : p.width && p.height
@@ -57,8 +78,8 @@ const getPuzzles = async (userId) => {
         : 50;
     let progress = 0;
     
-    if (s && s.completedCells && Array.isArray(s.completedCells)) {
-      progress = Math.min(100, Math.round((s.completedCells.length / totalLetterCells) * 100));
+    if (sanitizedCompletedCells.length > 0) {
+      progress = Math.min(100, Math.round((sanitizedCompletedCells.length / totalLetterCells) * 100));
     }
     if (s?.status === 'COMPLETED') progress = 100;
 
@@ -169,8 +190,10 @@ const getGameStatus = async (sessionId) => {
     include: { puzzle: true },
   });
   if (!session) throw Object.assign(new Error('Oturum bulunamadı'), { statusCode: 404 });
+  const completedCells = sanitizeCompletedCells(session.puzzle?.gridData, session.completedCells);
   return {
     ...session,
+    completedCells,
     puzzle: {
       ...session.puzzle,
       title: normalizePuzzleTitle(session.puzzle?.title),
@@ -196,7 +219,7 @@ const submitAnswer = async (sessionId, { row, col, letter }) => {
   }
 
   // Daha önce bu hücre doldurulmuş mu?
-  let completed = session.completedCells || [];
+  let completed = sanitizeCompletedCells(gridData, session.completedCells);
   const alreadyCompleted = completed.find(c => c.row === row && c.col === col);
 
   const isCorrect = cell.answer.toUpperCase() === letter.toUpperCase();
@@ -263,7 +286,7 @@ const useHint = async (userId, sessionId, { type, row, col }) => {
     throw Object.assign(new Error('Sadece harf kutuları için yardım alınabilir.'), { statusCode: 400 });
   }
 
-  let completed = session.completedCells || [];
+  let completed = sanitizeCompletedCells(gridData, session.completedCells);
   const alreadyCompleted = completed.find(c => c.row === row && c.col === col);
   if (alreadyCompleted) {
     throw Object.assign(new Error('Bu hücre zaten çözülmüş.'), { statusCode: 400 });
@@ -311,7 +334,7 @@ const useHint = async (userId, sessionId, { type, row, col }) => {
 const getSessionResult = async (userId, sessionId) => {
   const session = await prisma.gameSession.findUnique({
     where: { id: sessionId },
-    include: { puzzle: { select: { id: true, title: true, difficulty: true } } },
+    include: { puzzle: { select: { id: true, title: true, difficulty: true, gridData: true } } },
   });
   if (!session) throw Object.assign(new Error('Oturum bulunamadı'), { statusCode: 404 });
   if (session.userId !== userId) throw Object.assign(new Error('Yetkisiz erişim'), { statusCode: 403 });
@@ -319,13 +342,14 @@ const getSessionResult = async (userId, sessionId) => {
   const totalLetterCells = Array.isArray(session.puzzle?.gridData)
     ? session.puzzle.gridData.filter(c => c.type === 'LETTER').length
     : 0;
-  const completedCount = Array.isArray(session.completedCells) ? session.completedCells.length : 0;
+  const completedCells = sanitizeCompletedCells(session.puzzle?.gridData, session.completedCells);
+  const completedCount = completedCells.length;
 
   return {
     sessionId: session.id,
     status: session.status,
     score: session.score,
-    completedCells: session.completedCells,
+    completedCells,
     totalCells: totalLetterCells,
     completedCount,
     completionRate: totalLetterCells > 0 ? Math.round((completedCount / totalLetterCells) * 100) : 0,
