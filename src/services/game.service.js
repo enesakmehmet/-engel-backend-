@@ -37,7 +37,7 @@ const getPuzzles = async (userId) => {
   const puzzles = await prisma.puzzle.findMany({
     where: { isActive: true },
     select: {
-      id: true, title: true, difficulty: true, width: true, height: true, points: true, categoryId: true, createdAt: true
+      id: true, title: true, difficulty: true, width: true, height: true, points: true, categoryId: true, createdAt: true, gridData: true
     },
     orderBy: { createdAt: 'desc' },
   });
@@ -45,11 +45,16 @@ const getPuzzles = async (userId) => {
   const sessions = await prisma.gameSession.findMany({
     where: { userId },
     select: { puzzleId: true, status: true, completedCells: true },
+    orderBy: { startedAt: 'desc' },
   });
 
   return puzzles.map(p => {
     const s = sessions.find(s => s.puzzleId === p.id);
-    const totalLetterCells = p.width && p.height ? Math.floor((p.width * p.height) / 2) : 50; 
+    const totalLetterCells = Array.isArray(p.gridData)
+      ? p.gridData.filter((cell) => cell.type === 'LETTER').length
+      : p.width && p.height
+        ? Math.floor((p.width * p.height) / 2)
+        : 50;
     let progress = 0;
     
     if (s && s.completedCells && Array.isArray(s.completedCells)) {
@@ -83,6 +88,7 @@ const startGame = async (userId, { puzzleId, difficulty = 'MEDIUM' }) => {
 
   const existingSession = await prisma.gameSession.findFirst({
     where: { userId, puzzleId: selectedPuzzle.id },
+    orderBy: { startedAt: 'desc' },
   });
 
   if (existingSession) {
