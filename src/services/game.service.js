@@ -52,6 +52,24 @@ const sanitizeCompletedCells = (gridData, completedCells) => {
   });
 };
 
+// ── Oturum bazlı mutex ───────────────────────
+// Aynı sessionId üzerinde paralel submit/hint çağrılarının
+// completedCells alanında yarış koşullarına neden olmaması için
+// işlemleri kuyruğa alıyoruz.
+const sessionLocks = new Map();
+
+const withSessionLock = async (sessionId, task) => {
+  const previous = sessionLocks.get(sessionId) || Promise.resolve();
+  const current = previous.catch(() => undefined).then(() => task());
+  const tracked = current.catch(() => undefined).finally(() => {
+    if (sessionLocks.get(sessionId) === tracked) {
+      sessionLocks.delete(sessionId);
+    }
+  });
+  sessionLocks.set(sessionId, tracked);
+  return current;
+};
+
 // ── Bulmaca Seçimi İçin Listeleme ───────────
 const getPuzzles = async (userId) => {
   const puzzles = await prisma.puzzle.findMany({
@@ -202,7 +220,10 @@ const getGameStatus = async (sessionId) => {
 };
 
 // ── Harf Gönderme ───────────────────────────
-const submitAnswer = async (sessionId, { row, col, letter }) => {
+const submitAnswer = (sessionId, payload) =>
+  withSessionLock(sessionId, () => submitAnswerInternal(sessionId, payload));
+
+const submitAnswerInternal = async (sessionId, { row, col, letter }) => {
   const session = await prisma.gameSession.findUnique({
     where: { id: sessionId },
     include: { puzzle: true }
@@ -270,7 +291,10 @@ const submitAnswer = async (sessionId, { row, col, letter }) => {
 };
 
 // ── Yardım Al (Hint) ─────────────────────────
-const useHint = async (userId, sessionId, { type, row, col }) => {
+const useHint = (userId, sessionId, payload) =>
+  withSessionLock(sessionId, () => useHintInternal(userId, sessionId, payload));
+
+const useHintInternal = async (userId, sessionId, { type, row, col }) => {
   const session = await prisma.gameSession.findUnique({
     where: { id: sessionId },
     include: { puzzle: true }
