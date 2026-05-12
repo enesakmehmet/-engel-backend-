@@ -12,6 +12,7 @@ router.get('/:sessionId/status',                 ctrl.getGameStatus);
 router.post('/:sessionId/answer',                validate(answerSchema),    ctrl.submitAnswer);
 router.post('/:sessionId/hint',                  validate(hintSchema),      ctrl.useHint);
 router.post('/:sessionId/sync-answers',          validate(syncAnswersSchema), ctrl.syncAnswers);
+router.post('/:sessionId/reset',                 ctrl.resetGame);
 router.post('/:sessionId/finish',                ctrl.finishGame);
 router.get('/:sessionId/result',                 ctrl.getSessionResult);
 

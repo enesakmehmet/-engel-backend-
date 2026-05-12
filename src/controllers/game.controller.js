@@ -43,6 +43,13 @@ const syncAnswers = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
+const resetGame = async (req, res, next) => {
+  try {
+    const result = await gameService.resetGame(req.user.id, req.params.sessionId);
+    return success(res, result, 'Bulmaca sıfırlandı');
+  } catch (err) { next(err); }
+};
+
 const finishGame = async (req, res, next) => {
   try {
     const result = await gameService.finishGame(req.params.sessionId);
@@ -57,4 +64,4 @@ const getSessionResult = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-module.exports = { getPuzzles, startGame, getGameStatus, submitAnswer, useHint, syncAnswers, finishGame, getSessionResult };
+module.exports = { getPuzzles, startGame, getGameStatus, submitAnswer, useHint, syncAnswers, resetGame, finishGame, getSessionResult };

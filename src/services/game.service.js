@@ -419,6 +419,36 @@ const syncAnswersInternal = async (userId, sessionId, { answers }) => {
   };
 };
 
+// ── Oturum Sıfırlama ─────────────────────────
+const resetGame = async (userId, sessionId) => {
+  const session = await prisma.gameSession.findUnique({
+    where: { id: sessionId },
+    include: { puzzle: true },
+  });
+
+  if (!session) throw Object.assign(new Error('Oturum bulunamadı'), { statusCode: 404 });
+  if (session.userId !== userId) throw Object.assign(new Error('Yetkisiz erişim'), { statusCode: 403 });
+
+  const updated = await prisma.gameSession.update({
+    where: { id: sessionId },
+    data: {
+      completedCells: [],
+      score: 0,
+      status: 'IN_PROGRESS',
+      finishedAt: null,
+    },
+  });
+
+  return {
+    ...updated,
+    completedCells: [],
+    puzzle: {
+      ...session.puzzle,
+      title: normalizePuzzleTitle(session.puzzle?.title),
+    },
+  };
+};
+
 // ── Oyun Sonucu ─────────────────────────────
 const getSessionResult = async (userId, sessionId) => {
   const session = await prisma.gameSession.findUnique({
@@ -457,4 +487,4 @@ const finishGame = async (sessionId) => {
   return session;
 };
 
-module.exports = { getPuzzles, startGame, getGameStatus, submitAnswer, useHint, syncAnswers, finishGame, getSessionResult };
+module.exports = { getPuzzles, startGame, getGameStatus, submitAnswer, useHint, syncAnswers, resetGame, finishGame, getSessionResult };
