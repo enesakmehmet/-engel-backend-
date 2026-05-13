@@ -8,6 +8,20 @@ const { verifyFirebaseIdToken } = require('../utils/firebase');
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
+const getGoogleClientIds = () => {
+  const ids = [
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_WEB_CLIENT_ID,
+    process.env.GOOGLE_IOS_CLIENT_ID,
+    process.env.GOOGLE_ANDROID_CLIENT_ID,
+    ...(process.env.GOOGLE_CLIENT_IDS || '').split(','),
+  ]
+    .map((id) => id?.trim())
+    .filter(Boolean);
+
+  return [...new Set(ids)];
+};
+
 // ── Kullanıcı adı üret ─────────────────────
 const generateUsername = async (base) => {
   const clean = base.replace(/[^a-zA-Z0-9]/g, '').toLowerCase().slice(0, 15) || 'user';
@@ -133,12 +147,36 @@ const firebaseAuth = async ({ idToken, provider }) => {
 
 // ── Google OAuth ───────────────────────────
 const googleAuth = async ({ idToken }) => {
-  const ticket = await googleClient.verifyIdToken({
-    idToken,
-    audience: process.env.GOOGLE_CLIENT_ID,
-  });
+  if (!idToken) {
+    throw Object.assign(new Error('Google ID token gerekli'), { statusCode: 400 });
+  }
+
+  const audience = getGoogleClientIds();
+  if (audience.length === 0) {
+    throw Object.assign(new Error('Google OAuth client ID tanımlı değil'), { statusCode: 500 });
+  }
+
+  let ticket;
+  try {
+    ticket = await googleClient.verifyIdToken({
+      idToken,
+      audience: audience.length === 1 ? audience[0] : audience,
+    });
+  } catch (err) {
+    const message = err?.message || 'Google token doğrulanamadı';
+    throw Object.assign(new Error(`Google token doğrulanamadı: ${message}`), { statusCode: 401 });
+  }
+
   const payload = ticket.getPayload();
+  if (!payload) {
+    throw Object.assign(new Error('Google token payload okunamadı'), { statusCode: 401 });
+  }
+
   const { sub: googleId, email, name, picture } = payload;
+
+  if (!googleId) {
+    throw Object.assign(new Error('Google kullanıcı bilgisi alınamadı'), { statusCode: 401 });
+  }
 
   let user = await prisma.user.findFirst({
     where: { OR: [{ googleId }, { email }] },
