@@ -29,6 +29,14 @@ const rewardAdStars = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
+const claimDailyTask = async (req, res, next) => {
+  try {
+    const { taskId } = req.body || {};
+    const data = await userService.claimDailyTask(req.user.id, taskId);
+    return success(res, data, data.message);
+  } catch (err) { next(err); }
+};
+
 const getGameHistory = async (req, res, next) => {
   try {
     const { page = 1, limit = 10 } = req.query;
@@ -51,4 +59,4 @@ const deleteAccount = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-module.exports = { getProfile, updateProfile, getStats, rewardAdStars, getGameHistory, changePassword, deleteAccount };
+module.exports = { getProfile, updateProfile, getStats, rewardAdStars, claimDailyTask, getGameHistory, changePassword, deleteAccount };

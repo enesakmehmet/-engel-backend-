@@ -8,6 +8,7 @@ router.get('/profile',  ctrl.getProfile);
 router.put('/profile',  ctrl.updateProfile);
 router.get('/stats',    ctrl.getStats);
 router.post('/reward-ad', ctrl.rewardAdStars);
+router.post('/daily-task/claim', ctrl.claimDailyTask);
 router.get('/history',  ctrl.getGameHistory);
 router.put('/change-password', ctrl.changePassword);
 router.delete('/account', ctrl.deleteAccount);

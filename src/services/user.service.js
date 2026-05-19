@@ -124,6 +124,50 @@ const rewardAdStars = async (userId) => {
   };
 };
 
+// ── Günlük Görev Ödülü ──────────────────────
+// Görev ID -> Yıldız ödülü (mobil tarafındaki UI ile uyumlu)
+const DAILY_TASK_REWARDS = {
+  t1: 25,   // 1 bulmaca çöz
+  t2: 50,   // 3 doğru cevap ver
+  t3: 100,  // 2 kez üst üste kazan
+};
+
+// userId+taskId+gün başına claim'i engellemek için hafif bir hafıza önbelleği.
+// Sunucu restart'ında sıfırlanır ama oyuncu bir cihazda da yine AsyncStorage ile
+// işaretliyor. Fazladan koruma katmanı.
+const dailyTaskClaimCache = new Map();
+const dailyClaimKey = (userId, taskId) => {
+  const today = new Date().toISOString().slice(0, 10);
+  return `${userId}:${today}:${taskId}`;
+};
+
+const claimDailyTask = async (userId, taskId) => {
+  if (!DAILY_TASK_REWARDS[taskId]) {
+    throw Object.assign(new Error('Geçersiz görev'), { statusCode: 400 });
+  }
+
+  const key = dailyClaimKey(userId, taskId);
+  if (dailyTaskClaimCache.has(key)) {
+    throw Object.assign(new Error('Bu görevin ödülü bugün zaten alındı'), { statusCode: 409 });
+  }
+
+  const rewardAmount = DAILY_TASK_REWARDS[taskId];
+  const user = await prisma.user.update({
+    where: { id: userId },
+    data: { totalScore: { increment: rewardAmount } },
+    select: { id: true, totalScore: true },
+  });
+
+  dailyTaskClaimCache.set(key, true);
+
+  return {
+    message: `Günlük görev ödülü: +${rewardAmount} ⭐`,
+    taskId,
+    rewardAmount,
+    totalScore: user.totalScore,
+  };
+};
+
 // ── Şifre Değiştirme ─────────────────────────
 const changePassword = async (userId, { currentPassword, newPassword }) => {
   const bcrypt = require('bcryptjs');
@@ -158,4 +202,4 @@ const deleteAccount = async (userId) => {
   return { message: 'Hesabınız başarıyla silindi' };
 };
 
-module.exports = { getProfile, updateProfile, getGameHistory, getStats, rewardAdStars, changePassword, deleteAccount };
+module.exports = { getProfile, updateProfile, getGameHistory, getStats, rewardAdStars, claimDailyTask, changePassword, deleteAccount };
